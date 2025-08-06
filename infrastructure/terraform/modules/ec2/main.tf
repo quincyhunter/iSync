@@ -1,10 +1,10 @@
-data "aws_ami" "ubuntu" {
+data "aws_ami" "windows" {
   most_recent = true
-  owners      = ["099720109477"] # Canonical
+  owners      = ["801119661308"] # Amazon
 
   filter {
     name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]
+    values = ["Windows_Server-2022-English-Full-Base-*"]
   }
 
   filter {
@@ -24,10 +24,10 @@ resource "aws_security_group" "processing_instance" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  # Allow SSH for debugging (can be removed in production)
+  # Allow RDP for debugging (can be removed in production)
   ingress {
-    from_port   = 22
-    to_port     = 22
+    from_port   = 3389
+    to_port     = 3389
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -45,7 +45,7 @@ resource "aws_security_group" "processing_instance" {
 resource "aws_launch_template" "processing_instance" {
   name_prefix   = "isync-processing-${var.environment}-"
   description   = "Launch template for iSync music processing instances"
-  image_id      = data.aws_ami.ubuntu.id
+  image_id      = data.aws_ami.windows.id
   instance_type = var.instance_type
 
   vpc_security_group_ids = [aws_security_group.processing_instance.id]
@@ -54,7 +54,7 @@ resource "aws_launch_template" "processing_instance" {
     name = var.instance_profile_name
   }
 
-  user_data = base64encode(templatefile("${path.module}/user_data.sh", {
+  user_data = base64encode(templatefile("${path.module}/user_data.ps1", {
     environment        = var.environment
     queue_url         = var.queue_url
     upload_bucket     = var.upload_bucket
