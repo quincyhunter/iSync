@@ -132,11 +132,11 @@ resource "aws_iam_role_policy_attachment" "lambda_basic_execution" {
 }
 
 resource "aws_lambda_function" "upload_handler" {
-  filename         = "../../backend/dist/upload-handler.zip"
+  filename         = "${path.module}/../../backend/dist/upload-handler.zip"
   function_name    = "isync-upload-handler-${var.environment}"
   role            = aws_iam_role.lambda_execution_role.arn
   handler         = "index.handler"
-  source_code_hash = filebase64sha256("../../backend/dist/upload-handler.zip")
+  source_code_hash = filebase64sha256("${path.module}/../../backend/dist/upload-handler.zip")
   runtime         = "nodejs18.x"
   timeout         = 30
   memory_size     = 512
@@ -155,6 +155,10 @@ resource "aws_lambda_function" "upload_handler" {
     mode = "Active"
   }
 
+  lifecycle {
+    ignore_changes = [filename, source_code_hash]
+  }
+
   tags = {
     Name        = "iSync Upload Handler"
     Environment = var.environment
@@ -162,11 +166,11 @@ resource "aws_lambda_function" "upload_handler" {
 }
 
 resource "aws_lambda_function" "metadata_processor" {
-  filename         = "../../backend/dist/metadata-processor.zip"
+  filename         = "${path.module}/../../backend/dist/metadata-processor.zip"
   function_name    = "isync-metadata-processor-${var.environment}"
   role            = aws_iam_role.lambda_execution_role.arn
   handler         = "index.handler"
-  source_code_hash = filebase64sha256("../../backend/dist/metadata-processor.zip")
+  source_code_hash = filebase64sha256("${path.module}/../../backend/dist/metadata-processor.zip")
   runtime         = "nodejs18.x"
   timeout         = 60
   memory_size     = 256
@@ -184,6 +188,10 @@ resource "aws_lambda_function" "metadata_processor" {
     mode = "Active"
   }
 
+  lifecycle {
+    ignore_changes = [filename, source_code_hash]
+  }
+
   tags = {
     Name        = "iSync Metadata Processor"
     Environment = var.environment
@@ -191,11 +199,11 @@ resource "aws_lambda_function" "metadata_processor" {
 }
 
 resource "aws_lambda_function" "queue_manager" {
-  filename         = "../../backend/dist/queue-manager.zip"
+  filename         = "${path.module}/../../backend/dist/queue-manager.zip"
   function_name    = "isync-queue-manager-${var.environment}"
   role            = aws_iam_role.lambda_execution_role.arn
   handler         = "index.handler"
-  source_code_hash = filebase64sha256("../../backend/dist/queue-manager.zip")
+  source_code_hash = filebase64sha256("${path.module}/../../backend/dist/queue-manager.zip")
   runtime         = "nodejs18.x"
   timeout         = 300
   memory_size     = 256
@@ -213,6 +221,10 @@ resource "aws_lambda_function" "queue_manager" {
     mode = "Active"
   }
 
+  lifecycle {
+    ignore_changes = [filename, source_code_hash]
+  }
+
   tags = {
     Name        = "iSync Queue Manager"
     Environment = var.environment
@@ -220,11 +232,11 @@ resource "aws_lambda_function" "queue_manager" {
 }
 
 resource "aws_lambda_function" "ec2_controller" {
-  filename         = "../../backend/dist/ec2-controller.zip"
+  filename         = "${path.module}/../../backend/dist/ec2-controller.zip"
   function_name    = "isync-ec2-controller-${var.environment}"
   role            = aws_iam_role.lambda_execution_role.arn
   handler         = "index.handler"
-  source_code_hash = filebase64sha256("../../backend/dist/ec2-controller.zip")
+  source_code_hash = filebase64sha256("${path.module}/../../backend/dist/ec2-controller.zip")
   runtime         = "nodejs18.x"
   timeout         = 300
   memory_size     = 256
@@ -239,6 +251,10 @@ resource "aws_lambda_function" "ec2_controller" {
 
   tracing_config {
     mode = "Active"
+  }
+
+  lifecycle {
+    ignore_changes = [filename, source_code_hash]
   }
 
   tags = {

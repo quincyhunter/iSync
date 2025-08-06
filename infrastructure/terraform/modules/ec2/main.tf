@@ -184,7 +184,7 @@ resource "aws_cloudwatch_metric_alarm" "queue_low" {
 
 # EventBridge target for scheduled processing
 resource "aws_cloudwatch_event_target" "scheduled_processing" {
-  rule      = var.processing_schedule_arn
+  rule      = "isync-processing-schedule-${var.environment}"
   target_id = "isync-scheduled-processing-${var.environment}"
   arn       = aws_autoscaling_policy.scale_up.arn
 

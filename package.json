@@ -1,0 +1,25 @@
+{
+  "name": "isync",
+  "version": "1.0.0",
+  "description": "A project to upload music files directly from your phone to your Apple Music library",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/quincyhunter/iSync.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/quincyhunter/iSync/issues"
+  },
+  "homepage": "https://github.com/quincyhunter/iSync#readme"
+}

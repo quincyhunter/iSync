@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(chmod:*)",
+      "Bash(terraform:*)",
+      "Bash(find:*)",
+      "Bash(python3 -m pytest test_terraform.py --collect-only)",
+      "Bash(python:*)"
+    ],
+    "deny": []
+  }
+}
