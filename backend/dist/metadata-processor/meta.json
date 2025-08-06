@@ -1,0 +1,2738 @@
+{
+  "inputs": {
+    "node_modules/logform/format.js": {
+      "bytes": 1168,
+      "imports": [
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/@colors/colors/lib/styles.js": {
+      "bytes": 2513,
+      "imports": [],
+      "format": "cjs"
+    },
+    "node_modules/@colors/colors/lib/system/has-flag.js": {
+      "bytes": 1421,
+      "imports": [],
+      "format": "cjs"
+    },
+    "node_modules/@colors/colors/lib/system/supports-colors.js": {
+      "bytes": 4049,
+      "imports": [
+        {
+          "path": "os",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "node_modules/@colors/colors/lib/system/has-flag.js",
+          "kind": "require-call",
+          "original": "./has-flag.js"
+        },
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/@colors/colors/lib/custom/trap.js": {
+      "bytes": 1677,
+      "imports": [
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/@colors/colors/lib/custom/zalgo.js": {
+      "bytes": 2890,
+      "imports": [
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/@colors/colors/lib/maps/america.js": {
+      "bytes": 278,
+      "imports": [],
+      "format": "cjs"
+    },
+    "node_modules/@colors/colors/lib/maps/zebra.js": {
+      "bytes": 146,
+      "imports": [],
+      "format": "cjs"
+    },
+    "node_modules/@colors/colors/lib/maps/rainbow.js": {
+      "bytes": 311,
+      "imports": [],
+      "format": "cjs"
+    },
+    "node_modules/@colors/colors/lib/maps/random.js": {
+      "bytes": 454,
+      "imports": [],
+      "format": "cjs"
+    },
+    "node_modules/@colors/colors/lib/colors.js": {
+      "bytes": 5868,
+      "imports": [
+        {
+          "path": "util",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "node_modules/@colors/colors/lib/styles.js",
+          "kind": "require-call",
+          "original": "./styles"
+        },
+        {
+          "path": "node_modules/@colors/colors/lib/system/supports-colors.js",
+          "kind": "require-call",
+          "original": "./system/supports-colors"
+        },
+        {
+          "path": "node_modules/@colors/colors/lib/custom/trap.js",
+          "kind": "require-call",
+          "original": "./custom/trap"
+        },
+        {
+          "path": "node_modules/@colors/colors/lib/custom/zalgo.js",
+          "kind": "require-call",
+          "original": "./custom/zalgo"
+        },
+        {
+          "path": "node_modules/@colors/colors/lib/maps/america.js",
+          "kind": "require-call",
+          "original": "./maps/america"
+        },
+        {
+          "path": "node_modules/@colors/colors/lib/maps/zebra.js",
+          "kind": "require-call",
+          "original": "./maps/zebra"
+        },
+        {
+          "path": "node_modules/@colors/colors/lib/maps/rainbow.js",
+          "kind": "require-call",
+          "original": "./maps/rainbow"
+        },
+        {
+          "path": "node_modules/@colors/colors/lib/maps/random.js",
+          "kind": "require-call",
+          "original": "./maps/random"
+        },
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/@colors/colors/safe.js": {
+      "bytes": 248,
+      "imports": [
+        {
+          "path": "node_modules/@colors/colors/lib/colors.js",
+          "kind": "require-call",
+          "original": "./lib/colors"
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/triple-beam/config/cli.js": {
+      "bytes": 616,
+      "imports": [],
+      "format": "cjs"
+    },
+    "node_modules/triple-beam/config/npm.js": {
+      "bytes": 516,
+      "imports": [],
+      "format": "cjs"
+    },
+    "node_modules/triple-beam/config/syslog.js": {
+      "bytes": 556,
+      "imports": [],
+      "format": "cjs"
+    },
+    "node_modules/triple-beam/config/index.js": {
+      "bytes": 538,
+      "imports": [
+        {
+          "path": "node_modules/triple-beam/config/cli.js",
+          "kind": "require-call",
+          "original": "./cli"
+        },
+        {
+          "path": "node_modules/triple-beam/config/npm.js",
+          "kind": "require-call",
+          "original": "./npm"
+        },
+        {
+          "path": "node_modules/triple-beam/config/syslog.js",
+          "kind": "require-call",
+          "original": "./syslog"
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/triple-beam/index.js": {
+      "bytes": 1065,
+      "imports": [
+        {
+          "path": "node_modules/triple-beam/config/index.js",
+          "kind": "require-call",
+          "original": "./config"
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/logform/colorize.js": {
+      "bytes": 3038,
+      "imports": [
+        {
+          "path": "node_modules/@colors/colors/safe.js",
+          "kind": "require-call",
+          "original": "@colors/colors/safe"
+        },
+        {
+          "path": "node_modules/triple-beam/index.js",
+          "kind": "require-call",
+          "original": "triple-beam"
+        },
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/logform/levels.js": {
+      "bytes": 251,
+      "imports": [
+        {
+          "path": "node_modules/logform/colorize.js",
+          "kind": "require-call",
+          "original": "./colorize"
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/logform/align.js": {
+      "bytes": 367,
+      "imports": [
+        {
+          "path": "node_modules/logform/format.js",
+          "kind": "require-call",
+          "original": "./format"
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/logform/errors.js": {
+      "bytes": 1216,
+      "imports": [
+        {
+          "path": "node_modules/logform/format.js",
+          "kind": "require-call",
+          "original": "./format"
+        },
+        {
+          "path": "node_modules/triple-beam/index.js",
+          "kind": "require-call",
+          "original": "triple-beam"
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/logform/pad-levels.js": {
+      "bytes": 2880,
+      "imports": [
+        {
+          "path": "node_modules/triple-beam/index.js",
+          "kind": "require-call",
+          "original": "triple-beam"
+        },
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/logform/cli.js": {
+      "bytes": 1216,
+      "imports": [
+        {
+          "path": "node_modules/logform/colorize.js",
+          "kind": "require-call",
+          "original": "./colorize"
+        },
+        {
+          "path": "node_modules/logform/pad-levels.js",
+          "kind": "require-call",
+          "original": "./pad-levels"
+        },
+        {
+          "path": "node_modules/triple-beam/index.js",
+          "kind": "require-call",
+          "original": "triple-beam"
+        },
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/logform/combine.js": {
+      "bytes": 1801,
+      "imports": [
+        {
+          "path": "node_modules/logform/format.js",
+          "kind": "require-call",
+          "original": "./format"
+        },
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/safe-stable-stringify/index.js": {
+      "bytes": 19873,
+      "imports": [
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/logform/json.js": {
+      "bytes": 983,
+      "imports": [
+        {
+          "path": "node_modules/logform/format.js",
+          "kind": "require-call",
+          "original": "./format"
+        },
+        {
+          "path": "node_modules/triple-beam/index.js",
+          "kind": "require-call",
+          "original": "triple-beam"
+        },
+        {
+          "path": "node_modules/safe-stable-stringify/index.js",
+          "kind": "require-call",
+          "original": "safe-stable-stringify"
+        },
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/logform/label.js": {
+      "bytes": 469,
+      "imports": [
+        {
+          "path": "node_modules/logform/format.js",
+          "kind": "require-call",
+          "original": "./format"
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/logform/logstash.js": {
+      "bytes": 759,
+      "imports": [
+        {
+          "path": "node_modules/logform/format.js",
+          "kind": "require-call",
+          "original": "./format"
+        },
+        {
+          "path": "node_modules/triple-beam/index.js",
+          "kind": "require-call",
+          "original": "triple-beam"
+        },
+        {
+          "path": "node_modules/safe-stable-stringify/index.js",
+          "kind": "require-call",
+          "original": "safe-stable-stringify"
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/logform/metadata.js": {
+      "bytes": 1327,
+      "imports": [
+        {
+          "path": "node_modules/logform/format.js",
+          "kind": "require-call",
+          "original": "./format"
+        },
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/ms/index.js": {
+      "bytes": 3024,
+      "imports": [
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/logform/ms.js": {
+      "bytes": 430,
+      "imports": [
+        {
+          "path": "node_modules/logform/format.js",
+          "kind": "require-call",
+          "original": "./format"
+        },
+        {
+          "path": "node_modules/ms/index.js",
+          "kind": "require-call",
+          "original": "ms"
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/logform/pretty-print.js": {
+      "bytes": 899,
+      "imports": [
+        {
+          "path": "util",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "node_modules/logform/format.js",
+          "kind": "require-call",
+          "original": "./format"
+        },
+        {
+          "path": "node_modules/triple-beam/index.js",
+          "kind": "require-call",
+          "original": "triple-beam"
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/logform/printf.js": {
+      "bytes": 515,
+      "imports": [
+        {
+          "path": "node_modules/triple-beam/index.js",
+          "kind": "require-call",
+          "original": "triple-beam"
+        },
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/logform/simple.js": {
+      "bytes": 979,
+      "imports": [
+        {
+          "path": "node_modules/logform/format.js",
+          "kind": "require-call",
+          "original": "./format"
+        },
+        {
+          "path": "node_modules/triple-beam/index.js",
+          "kind": "require-call",
+          "original": "triple-beam"
+        },
+        {
+          "path": "node_modules/safe-stable-stringify/index.js",
+          "kind": "require-call",
+          "original": "safe-stable-stringify"
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/logform/splat.js": {
+      "bytes": 4271,
+      "imports": [
+        {
+          "path": "util",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "node_modules/triple-beam/index.js",
+          "kind": "require-call",
+          "original": "triple-beam"
+        },
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/fecha/lib/fecha.umd.js": {
+      "bytes": 15359,
+      "imports": [
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/logform/timestamp.js": {
+      "bytes": 757,
+      "imports": [
+        {
+          "path": "node_modules/fecha/lib/fecha.umd.js",
+          "kind": "require-call",
+          "original": "fecha"
+        },
+        {
+          "path": "node_modules/logform/format.js",
+          "kind": "require-call",
+          "original": "./format"
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/logform/uncolorize.js": {
+      "bytes": 705,
+      "imports": [
+        {
+          "path": "node_modules/@colors/colors/safe.js",
+          "kind": "require-call",
+          "original": "@colors/colors/safe"
+        },
+        {
+          "path": "node_modules/logform/format.js",
+          "kind": "require-call",
+          "original": "./format"
+        },
+        {
+          "path": "node_modules/triple-beam/index.js",
+          "kind": "require-call",
+          "original": "triple-beam"
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/logform/index.js": {
+      "bytes": 1873,
+      "imports": [
+        {
+          "path": "node_modules/logform/format.js",
+          "kind": "require-call",
+          "original": "./format"
+        },
+        {
+          "path": "node_modules/logform/levels.js",
+          "kind": "require-call",
+          "original": "./levels"
+        },
+        {
+          "path": "node_modules/logform/align.js",
+          "kind": "require-call",
+          "original": "./align"
+        },
+        {
+          "path": "node_modules/logform/errors.js",
+          "kind": "require-call",
+          "original": "./errors"
+        },
+        {
+          "path": "node_modules/logform/cli.js",
+          "kind": "require-call",
+          "original": "./cli"
+        },
+        {
+          "path": "node_modules/logform/combine.js",
+          "kind": "require-call",
+          "original": "./combine"
+        },
+        {
+          "path": "node_modules/logform/colorize.js",
+          "kind": "require-call",
+          "original": "./colorize"
+        },
+        {
+          "path": "node_modules/logform/json.js",
+          "kind": "require-call",
+          "original": "./json"
+        },
+        {
+          "path": "node_modules/logform/label.js",
+          "kind": "require-call",
+          "original": "./label"
+        },
+        {
+          "path": "node_modules/logform/logstash.js",
+          "kind": "require-call",
+          "original": "./logstash"
+        },
+        {
+          "path": "node_modules/logform/metadata.js",
+          "kind": "require-call",
+          "original": "./metadata"
+        },
+        {
+          "path": "node_modules/logform/ms.js",
+          "kind": "require-call",
+          "original": "./ms"
+        },
+        {
+          "path": "node_modules/logform/pad-levels.js",
+          "kind": "require-call",
+          "original": "./pad-levels"
+        },
+        {
+          "path": "node_modules/logform/pretty-print.js",
+          "kind": "require-call",
+          "original": "./pretty-print"
+        },
+        {
+          "path": "node_modules/logform/printf.js",
+          "kind": "require-call",
+          "original": "./printf"
+        },
+        {
+          "path": "node_modules/logform/simple.js",
+          "kind": "require-call",
+          "original": "./simple"
+        },
+        {
+          "path": "node_modules/logform/splat.js",
+          "kind": "require-call",
+          "original": "./splat"
+        },
+        {
+          "path": "node_modules/logform/timestamp.js",
+          "kind": "require-call",
+          "original": "./timestamp"
+        },
+        {
+          "path": "node_modules/logform/uncolorize.js",
+          "kind": "require-call",
+          "original": "./uncolorize"
+        },
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/winston/lib/winston/common.js": {
+      "bytes": 1016,
+      "imports": [
+        {
+          "path": "util",
+          "kind": "require-call",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/winston/package.json": {
+      "bytes": 1968,
+      "imports": []
+    },
+    "node_modules/util-deprecate/node.js": {
+      "bytes": 123,
+      "imports": [
+        {
+          "path": "util",
+          "kind": "require-call",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/readable-stream/lib/internal/streams/stream.js": {
+      "bytes": 36,
+      "imports": [
+        {
+          "path": "stream",
+          "kind": "require-call",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/readable-stream/lib/internal/streams/destroy.js": {
+      "bytes": 3109,
+      "imports": [
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/readable-stream/errors.js": {
+      "bytes": 3715,
+      "imports": [
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/readable-stream/lib/internal/streams/state.js": {
+      "bytes": 745,
+      "imports": [
+        {
+          "path": "node_modules/readable-stream/errors.js",
+          "kind": "require-call",
+          "original": "../../../errors"
+        },
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/inherits/inherits_browser.js": {
+      "bytes": 753,
+      "imports": [
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/inherits/inherits.js": {
+      "bytes": 250,
+      "imports": [
+        {
+          "path": "util",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "node_modules/inherits/inherits_browser.js",
+          "kind": "require-call",
+          "original": "./inherits_browser.js"
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/readable-stream/lib/internal/streams/buffer_list.js": {
+      "bytes": 6905,
+      "imports": [
+        {
+          "path": "buffer",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "util",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/safe-buffer/index.js": {
+      "bytes": 1670,
+      "imports": [
+        {
+          "path": "buffer",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/string_decoder/lib/string_decoder.js": {
+      "bytes": 9465,
+      "imports": [
+        {
+          "path": "node_modules/safe-buffer/index.js",
+          "kind": "require-call",
+          "original": "safe-buffer"
+        },
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/readable-stream/lib/internal/streams/end-of-stream.js": {
+      "bytes": 3084,
+      "imports": [
+        {
+          "path": "node_modules/readable-stream/errors.js",
+          "kind": "require-call",
+          "original": "../../../errors"
+        },
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/readable-stream/lib/internal/streams/async_iterator.js": {
+      "bytes": 6468,
+      "imports": [
+        {
+          "path": "node_modules/readable-stream/lib/internal/streams/end-of-stream.js",
+          "kind": "require-call",
+          "original": "./end-of-stream"
+        },
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/readable-stream/lib/internal/streams/from.js": {
+      "bytes": 3668,
+      "imports": [
+        {
+          "path": "node_modules/readable-stream/errors.js",
+          "kind": "require-call",
+          "original": "../../../errors"
+        },
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/readable-stream/lib/_stream_readable.js": {
+      "bytes": 36023,
+      "imports": [
+        {
+          "path": "events",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "node_modules/readable-stream/lib/internal/streams/stream.js",
+          "kind": "require-call",
+          "original": "./internal/streams/stream"
+        },
+        {
+          "path": "buffer",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "util",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "node_modules/readable-stream/lib/internal/streams/buffer_list.js",
+          "kind": "require-call",
+          "original": "./internal/streams/buffer_list"
+        },
+        {
+          "path": "node_modules/readable-stream/lib/internal/streams/destroy.js",
+          "kind": "require-call",
+          "original": "./internal/streams/destroy"
+        },
+        {
+          "path": "node_modules/readable-stream/lib/internal/streams/state.js",
+          "kind": "require-call",
+          "original": "./internal/streams/state"
+        },
+        {
+          "path": "node_modules/readable-stream/errors.js",
+          "kind": "require-call",
+          "original": "../errors"
+        },
+        {
+          "path": "node_modules/inherits/inherits.js",
+          "kind": "require-call",
+          "original": "inherits"
+        },
+        {
+          "path": "node_modules/readable-stream/lib/_stream_duplex.js",
+          "kind": "require-call",
+          "original": "./_stream_duplex"
+        },
+        {
+          "path": "node_modules/string_decoder/lib/string_decoder.js",
+          "kind": "require-call",
+          "original": "string_decoder/"
+        },
+        {
+          "path": "node_modules/readable-stream/lib/_stream_duplex.js",
+          "kind": "require-call",
+          "original": "./_stream_duplex"
+        },
+        {
+          "path": "node_modules/string_decoder/lib/string_decoder.js",
+          "kind": "require-call",
+          "original": "string_decoder/"
+        },
+        {
+          "path": "node_modules/readable-stream/lib/internal/streams/async_iterator.js",
+          "kind": "require-call",
+          "original": "./internal/streams/async_iterator"
+        },
+        {
+          "path": "node_modules/readable-stream/lib/internal/streams/from.js",
+          "kind": "require-call",
+          "original": "./internal/streams/from"
+        },
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/readable-stream/lib/_stream_duplex.js": {
+      "bytes": 4381,
+      "imports": [
+        {
+          "path": "node_modules/readable-stream/lib/_stream_readable.js",
+          "kind": "require-call",
+          "original": "./_stream_readable"
+        },
+        {
+          "path": "node_modules/readable-stream/lib/_stream_writable.js",
+          "kind": "require-call",
+          "original": "./_stream_writable"
+        },
+        {
+          "path": "node_modules/inherits/inherits.js",
+          "kind": "require-call",
+          "original": "inherits"
+        },
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/readable-stream/lib/_stream_writable.js": {
+      "bytes": 21907,
+      "imports": [
+        {
+          "path": "node_modules/util-deprecate/node.js",
+          "kind": "require-call",
+          "original": "util-deprecate"
+        },
+        {
+          "path": "node_modules/readable-stream/lib/internal/streams/stream.js",
+          "kind": "require-call",
+          "original": "./internal/streams/stream"
+        },
+        {
+          "path": "buffer",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "node_modules/readable-stream/lib/internal/streams/destroy.js",
+          "kind": "require-call",
+          "original": "./internal/streams/destroy"
+        },
+        {
+          "path": "node_modules/readable-stream/lib/internal/streams/state.js",
+          "kind": "require-call",
+          "original": "./internal/streams/state"
+        },
+        {
+          "path": "node_modules/readable-stream/errors.js",
+          "kind": "require-call",
+          "original": "../errors"
+        },
+        {
+          "path": "node_modules/inherits/inherits.js",
+          "kind": "require-call",
+          "original": "inherits"
+        },
+        {
+          "path": "node_modules/readable-stream/lib/_stream_duplex.js",
+          "kind": "require-call",
+          "original": "./_stream_duplex"
+        },
+        {
+          "path": "node_modules/readable-stream/lib/_stream_duplex.js",
+          "kind": "require-call",
+          "original": "./_stream_duplex"
+        },
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/winston-transport/modern.js": {
+      "bytes": 6910,
+      "imports": [
+        {
+          "path": "util",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "node_modules/readable-stream/lib/_stream_writable.js",
+          "kind": "require-call",
+          "original": "readable-stream/lib/_stream_writable.js"
+        },
+        {
+          "path": "node_modules/triple-beam/index.js",
+          "kind": "require-call",
+          "original": "triple-beam"
+        },
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/winston-transport/legacy.js": {
+      "bytes": 3842,
+      "imports": [
+        {
+          "path": "util",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "node_modules/triple-beam/index.js",
+          "kind": "require-call",
+          "original": "triple-beam"
+        },
+        {
+          "path": "node_modules/winston-transport/modern.js",
+          "kind": "require-call",
+          "original": "./modern"
+        },
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/winston-transport/index.js": {
+      "bytes": 188,
+      "imports": [
+        {
+          "path": "node_modules/winston-transport/modern.js",
+          "kind": "require-call",
+          "original": "./modern"
+        },
+        {
+          "path": "node_modules/winston-transport/legacy.js",
+          "kind": "require-call",
+          "original": "./legacy"
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/winston/lib/winston/transports/console.js": {
+      "bytes": 3842,
+      "imports": [
+        {
+          "path": "os",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "node_modules/triple-beam/index.js",
+          "kind": "require-call",
+          "original": "triple-beam"
+        },
+        {
+          "path": "node_modules/winston-transport/index.js",
+          "kind": "require-call",
+          "original": "winston-transport"
+        },
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/async/internal/isArrayLike.js": {
+      "bytes": 279,
+      "imports": [
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/async/internal/initialParams.js": {
+      "bytes": 289,
+      "imports": [],
+      "format": "cjs"
+    },
+    "node_modules/async/internal/setImmediate.js": {
+      "bytes": 857,
+      "imports": [
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/async/asyncify.js": {
+      "bytes": 3762,
+      "imports": [
+        {
+          "path": "node_modules/async/internal/initialParams.js",
+          "kind": "require-call",
+          "original": "./internal/initialParams.js"
+        },
+        {
+          "path": "node_modules/async/internal/setImmediate.js",
+          "kind": "require-call",
+          "original": "./internal/setImmediate.js"
+        },
+        {
+          "path": "node_modules/async/internal/wrapAsync.js",
+          "kind": "require-call",
+          "original": "./internal/wrapAsync.js"
+        },
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/async/internal/wrapAsync.js": {
+      "bytes": 955,
+      "imports": [
+        {
+          "path": "node_modules/async/asyncify.js",
+          "kind": "require-call",
+          "original": "../asyncify.js"
+        },
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/async/internal/awaitify.js": {
+      "bytes": 816,
+      "imports": [
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/async/internal/parallel.js": {
+      "bytes": 962,
+      "imports": [
+        {
+          "path": "node_modules/async/internal/isArrayLike.js",
+          "kind": "require-call",
+          "original": "./isArrayLike.js"
+        },
+        {
+          "path": "node_modules/async/internal/wrapAsync.js",
+          "kind": "require-call",
+          "original": "./wrapAsync.js"
+        },
+        {
+          "path": "node_modules/async/internal/awaitify.js",
+          "kind": "require-call",
+          "original": "./awaitify.js"
+        },
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/async/internal/once.js": {
+      "bytes": 362,
+      "imports": [
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/async/internal/getIterator.js": {
+      "bytes": 217,
+      "imports": [],
+      "format": "cjs"
+    },
+    "node_modules/async/internal/iterator.js": {
+      "bytes": 1460,
+      "imports": [
+        {
+          "path": "node_modules/async/internal/isArrayLike.js",
+          "kind": "require-call",
+          "original": "./isArrayLike.js"
+        },
+        {
+          "path": "node_modules/async/internal/getIterator.js",
+          "kind": "require-call",
+          "original": "./getIterator.js"
+        },
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/async/internal/onlyOnce.js": {
+      "bytes": 360,
+      "imports": [
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/async/internal/breakLoop.js": {
+      "bytes": 254,
+      "imports": [],
+      "format": "cjs"
+    },
+    "node_modules/async/internal/asyncEachOfLimit.js": {
+      "bytes": 1976,
+      "imports": [
+        {
+          "path": "node_modules/async/internal/breakLoop.js",
+          "kind": "require-call",
+          "original": "./breakLoop.js"
+        },
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/async/internal/eachOfLimit.js": {
+      "bytes": 2638,
+      "imports": [
+        {
+          "path": "node_modules/async/internal/once.js",
+          "kind": "require-call",
+          "original": "./once.js"
+        },
+        {
+          "path": "node_modules/async/internal/iterator.js",
+          "kind": "require-call",
+          "original": "./iterator.js"
+        },
+        {
+          "path": "node_modules/async/internal/onlyOnce.js",
+          "kind": "require-call",
+          "original": "./onlyOnce.js"
+        },
+        {
+          "path": "node_modules/async/internal/wrapAsync.js",
+          "kind": "require-call",
+          "original": "./wrapAsync.js"
+        },
+        {
+          "path": "node_modules/async/internal/asyncEachOfLimit.js",
+          "kind": "require-call",
+          "original": "./asyncEachOfLimit.js"
+        },
+        {
+          "path": "node_modules/async/internal/breakLoop.js",
+          "kind": "require-call",
+          "original": "./breakLoop.js"
+        },
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/async/eachOfLimit.js": {
+      "bytes": 1638,
+      "imports": [
+        {
+          "path": "node_modules/async/internal/eachOfLimit.js",
+          "kind": "require-call",
+          "original": "./internal/eachOfLimit.js"
+        },
+        {
+          "path": "node_modules/async/internal/wrapAsync.js",
+          "kind": "require-call",
+          "original": "./internal/wrapAsync.js"
+        },
+        {
+          "path": "node_modules/async/internal/awaitify.js",
+          "kind": "require-call",
+          "original": "./internal/awaitify.js"
+        },
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/async/eachOfSeries.js": {
+      "bytes": 1330,
+      "imports": [
+        {
+          "path": "node_modules/async/eachOfLimit.js",
+          "kind": "require-call",
+          "original": "./eachOfLimit.js"
+        },
+        {
+          "path": "node_modules/async/internal/awaitify.js",
+          "kind": "require-call",
+          "original": "./internal/awaitify.js"
+        },
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/async/series.js": {
+      "bytes": 5823,
+      "imports": [
+        {
+          "path": "node_modules/async/internal/parallel.js",
+          "kind": "require-call",
+          "original": "./internal/parallel.js"
+        },
+        {
+          "path": "node_modules/async/eachOfSeries.js",
+          "kind": "require-call",
+          "original": "./eachOfSeries.js"
+        },
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/readable-stream/lib/_stream_transform.js": {
+      "bytes": 7936,
+      "imports": [
+        {
+          "path": "node_modules/readable-stream/errors.js",
+          "kind": "require-call",
+          "original": "../errors"
+        },
+        {
+          "path": "node_modules/readable-stream/lib/_stream_duplex.js",
+          "kind": "require-call",
+          "original": "./_stream_duplex"
+        },
+        {
+          "path": "node_modules/inherits/inherits.js",
+          "kind": "require-call",
+          "original": "inherits"
+        },
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/readable-stream/lib/_stream_passthrough.js": {
+      "bytes": 1628,
+      "imports": [
+        {
+          "path": "node_modules/readable-stream/lib/_stream_transform.js",
+          "kind": "require-call",
+          "original": "./_stream_transform"
+        },
+        {
+          "path": "node_modules/inherits/inherits.js",
+          "kind": "require-call",
+          "original": "inherits"
+        },
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/readable-stream/lib/internal/streams/pipeline.js": {
+      "bytes": 2416,
+      "imports": [
+        {
+          "path": "node_modules/readable-stream/errors.js",
+          "kind": "require-call",
+          "original": "../../../errors"
+        },
+        {
+          "path": "node_modules/readable-stream/lib/internal/streams/end-of-stream.js",
+          "kind": "require-call",
+          "original": "./end-of-stream"
+        },
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/readable-stream/readable.js": {
+      "bytes": 729,
+      "imports": [
+        {
+          "path": "stream",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "node_modules/readable-stream/lib/_stream_readable.js",
+          "kind": "require-call",
+          "original": "./lib/_stream_readable.js"
+        },
+        {
+          "path": "node_modules/readable-stream/lib/_stream_writable.js",
+          "kind": "require-call",
+          "original": "./lib/_stream_writable.js"
+        },
+        {
+          "path": "node_modules/readable-stream/lib/_stream_duplex.js",
+          "kind": "require-call",
+          "original": "./lib/_stream_duplex.js"
+        },
+        {
+          "path": "node_modules/readable-stream/lib/_stream_transform.js",
+          "kind": "require-call",
+          "original": "./lib/_stream_transform.js"
+        },
+        {
+          "path": "node_modules/readable-stream/lib/_stream_passthrough.js",
+          "kind": "require-call",
+          "original": "./lib/_stream_passthrough.js"
+        },
+        {
+          "path": "node_modules/readable-stream/lib/internal/streams/end-of-stream.js",
+          "kind": "require-call",
+          "original": "./lib/internal/streams/end-of-stream.js"
+        },
+        {
+          "path": "node_modules/readable-stream/lib/internal/streams/pipeline.js",
+          "kind": "require-call",
+          "original": "./lib/internal/streams/pipeline.js"
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/@dabh/diagnostics/diagnostics.js": {
+      "bytes": 4518,
+      "imports": [
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/@dabh/diagnostics/node/production.js": {
+      "bytes": 578,
+      "imports": [
+        {
+          "path": "node_modules/@dabh/diagnostics/diagnostics.js",
+          "kind": "require-call",
+          "original": "../diagnostics"
+        },
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/@dabh/diagnostics/node/index.js": {
+      "bytes": 223,
+      "imports": [
+        {
+          "path": "node_modules/@dabh/diagnostics/node/production.js",
+          "kind": "require-call",
+          "original": "./production.js"
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/winston/lib/winston/tail-file.js": {
+      "bytes": 2700,
+      "imports": [
+        {
+          "path": "fs",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "string_decoder",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "node_modules/readable-stream/readable.js",
+          "kind": "require-call",
+          "original": "readable-stream"
+        },
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/winston/lib/winston/transports/file.js": {
+      "bytes": 21333,
+      "imports": [
+        {
+          "path": "fs",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "path",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "node_modules/async/series.js",
+          "kind": "require-call",
+          "original": "async/series"
+        },
+        {
+          "path": "zlib",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "node_modules/triple-beam/index.js",
+          "kind": "require-call",
+          "original": "triple-beam"
+        },
+        {
+          "path": "node_modules/readable-stream/readable.js",
+          "kind": "require-call",
+          "original": "readable-stream"
+        },
+        {
+          "path": "node_modules/winston-transport/index.js",
+          "kind": "require-call",
+          "original": "winston-transport"
+        },
+        {
+          "path": "node_modules/@dabh/diagnostics/node/index.js",
+          "kind": "require-call",
+          "original": "@dabh/diagnostics"
+        },
+        {
+          "path": "os",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "node_modules/winston/lib/winston/tail-file.js",
+          "kind": "require-call",
+          "original": "../tail-file"
+        },
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/winston/lib/winston/transports/http.js": {
+      "bytes": 7733,
+      "imports": [
+        {
+          "path": "http",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "https",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "node_modules/readable-stream/readable.js",
+          "kind": "require-call",
+          "original": "readable-stream"
+        },
+        {
+          "path": "node_modules/winston-transport/index.js",
+          "kind": "require-call",
+          "original": "winston-transport"
+        },
+        {
+          "path": "node_modules/safe-stable-stringify/index.js",
+          "kind": "require-call",
+          "original": "safe-stable-stringify"
+        },
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/is-stream/index.js": {
+      "bytes": 677,
+      "imports": [
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/winston/lib/winston/transports/stream.js": {
+      "bytes": 1785,
+      "imports": [
+        {
+          "path": "node_modules/is-stream/index.js",
+          "kind": "require-call",
+          "original": "is-stream"
+        },
+        {
+          "path": "node_modules/triple-beam/index.js",
+          "kind": "require-call",
+          "original": "triple-beam"
+        },
+        {
+          "path": "os",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "node_modules/winston-transport/index.js",
+          "kind": "require-call",
+          "original": "winston-transport"
+        },
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/winston/lib/winston/transports/index.js": {
+      "bytes": 909,
+      "imports": [
+        {
+          "path": "node_modules/winston/lib/winston/transports/console.js",
+          "kind": "require-call",
+          "original": "./console"
+        },
+        {
+          "path": "node_modules/winston/lib/winston/transports/file.js",
+          "kind": "require-call",
+          "original": "./file"
+        },
+        {
+          "path": "node_modules/winston/lib/winston/transports/http.js",
+          "kind": "require-call",
+          "original": "./http"
+        },
+        {
+          "path": "node_modules/winston/lib/winston/transports/stream.js",
+          "kind": "require-call",
+          "original": "./stream"
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/winston/lib/winston/config/index.js": {
+      "bytes": 676,
+      "imports": [
+        {
+          "path": "node_modules/logform/index.js",
+          "kind": "require-call",
+          "original": "logform"
+        },
+        {
+          "path": "node_modules/triple-beam/index.js",
+          "kind": "require-call",
+          "original": "triple-beam"
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/async/eachOf.js": {
+      "bytes": 5743,
+      "imports": [
+        {
+          "path": "node_modules/async/internal/isArrayLike.js",
+          "kind": "require-call",
+          "original": "./internal/isArrayLike.js"
+        },
+        {
+          "path": "node_modules/async/internal/breakLoop.js",
+          "kind": "require-call",
+          "original": "./internal/breakLoop.js"
+        },
+        {
+          "path": "node_modules/async/eachOfLimit.js",
+          "kind": "require-call",
+          "original": "./eachOfLimit.js"
+        },
+        {
+          "path": "node_modules/async/internal/once.js",
+          "kind": "require-call",
+          "original": "./internal/once.js"
+        },
+        {
+          "path": "node_modules/async/internal/onlyOnce.js",
+          "kind": "require-call",
+          "original": "./internal/onlyOnce.js"
+        },
+        {
+          "path": "node_modules/async/internal/wrapAsync.js",
+          "kind": "require-call",
+          "original": "./internal/wrapAsync.js"
+        },
+        {
+          "path": "node_modules/async/internal/awaitify.js",
+          "kind": "require-call",
+          "original": "./internal/awaitify.js"
+        },
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/async/internal/withoutIndex.js": {
+      "bytes": 251,
+      "imports": [
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/async/forEach.js": {
+      "bytes": 4025,
+      "imports": [
+        {
+          "path": "node_modules/async/eachOf.js",
+          "kind": "require-call",
+          "original": "./eachOf.js"
+        },
+        {
+          "path": "node_modules/async/internal/withoutIndex.js",
+          "kind": "require-call",
+          "original": "./internal/withoutIndex.js"
+        },
+        {
+          "path": "node_modules/async/internal/wrapAsync.js",
+          "kind": "require-call",
+          "original": "./internal/wrapAsync.js"
+        },
+        {
+          "path": "node_modules/async/internal/awaitify.js",
+          "kind": "require-call",
+          "original": "./internal/awaitify.js"
+        },
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/fn.name/index.js": {
+      "bytes": 988,
+      "imports": [
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/one-time/index.js": {
+      "bytes": 1027,
+      "imports": [
+        {
+          "path": "node_modules/fn.name/index.js",
+          "kind": "require-call",
+          "original": "fn.name"
+        },
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/stack-trace/lib/stack-trace.js": {
+      "bytes": 3385,
+      "imports": [
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/winston/lib/winston/exception-stream.js": {
+      "bytes": 1506,
+      "imports": [
+        {
+          "path": "node_modules/readable-stream/readable.js",
+          "kind": "require-call",
+          "original": "readable-stream"
+        },
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/winston/lib/winston/exception-handler.js": {
+      "bytes": 6909,
+      "imports": [
+        {
+          "path": "os",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "node_modules/async/forEach.js",
+          "kind": "require-call",
+          "original": "async/forEach"
+        },
+        {
+          "path": "node_modules/@dabh/diagnostics/node/index.js",
+          "kind": "require-call",
+          "original": "@dabh/diagnostics"
+        },
+        {
+          "path": "node_modules/one-time/index.js",
+          "kind": "require-call",
+          "original": "one-time"
+        },
+        {
+          "path": "node_modules/stack-trace/lib/stack-trace.js",
+          "kind": "require-call",
+          "original": "stack-trace"
+        },
+        {
+          "path": "node_modules/winston/lib/winston/exception-stream.js",
+          "kind": "require-call",
+          "original": "./exception-stream"
+        },
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/winston/lib/winston/rejection-stream.js": {
+      "bytes": 1353,
+      "imports": [
+        {
+          "path": "node_modules/readable-stream/readable.js",
+          "kind": "require-call",
+          "original": "readable-stream"
+        },
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/winston/lib/winston/rejection-handler.js": {
+      "bytes": 6982,
+      "imports": [
+        {
+          "path": "os",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "node_modules/async/forEach.js",
+          "kind": "require-call",
+          "original": "async/forEach"
+        },
+        {
+          "path": "node_modules/@dabh/diagnostics/node/index.js",
+          "kind": "require-call",
+          "original": "@dabh/diagnostics"
+        },
+        {
+          "path": "node_modules/one-time/index.js",
+          "kind": "require-call",
+          "original": "one-time"
+        },
+        {
+          "path": "node_modules/stack-trace/lib/stack-trace.js",
+          "kind": "require-call",
+          "original": "stack-trace"
+        },
+        {
+          "path": "node_modules/winston/lib/winston/rejection-stream.js",
+          "kind": "require-call",
+          "original": "./rejection-stream"
+        },
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/winston/lib/winston/profiler.js": {
+      "bytes": 1419,
+      "imports": [
+        {
+          "path": "node_modules/winston/lib/winston/logger.js",
+          "kind": "require-call",
+          "original": "./logger"
+        },
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/winston/lib/winston/logger.js": {
+      "bytes": 19664,
+      "imports": [
+        {
+          "path": "node_modules/readable-stream/readable.js",
+          "kind": "require-call",
+          "original": "readable-stream"
+        },
+        {
+          "path": "node_modules/async/forEach.js",
+          "kind": "require-call",
+          "original": "async/forEach"
+        },
+        {
+          "path": "node_modules/triple-beam/index.js",
+          "kind": "require-call",
+          "original": "triple-beam"
+        },
+        {
+          "path": "node_modules/is-stream/index.js",
+          "kind": "require-call",
+          "original": "is-stream"
+        },
+        {
+          "path": "node_modules/winston/lib/winston/exception-handler.js",
+          "kind": "require-call",
+          "original": "./exception-handler"
+        },
+        {
+          "path": "node_modules/winston/lib/winston/rejection-handler.js",
+          "kind": "require-call",
+          "original": "./rejection-handler"
+        },
+        {
+          "path": "node_modules/winston-transport/legacy.js",
+          "kind": "require-call",
+          "original": "winston-transport/legacy"
+        },
+        {
+          "path": "node_modules/winston/lib/winston/profiler.js",
+          "kind": "require-call",
+          "original": "./profiler"
+        },
+        {
+          "path": "node_modules/winston/lib/winston/common.js",
+          "kind": "require-call",
+          "original": "./common"
+        },
+        {
+          "path": "node_modules/winston/lib/winston/config/index.js",
+          "kind": "require-call",
+          "original": "./config"
+        },
+        {
+          "path": "node_modules/logform/json.js",
+          "kind": "require-call",
+          "original": "logform/json"
+        },
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/winston/lib/winston/create-logger.js": {
+      "bytes": 3140,
+      "imports": [
+        {
+          "path": "node_modules/triple-beam/index.js",
+          "kind": "require-call",
+          "original": "triple-beam"
+        },
+        {
+          "path": "node_modules/winston/lib/winston/config/index.js",
+          "kind": "require-call",
+          "original": "./config"
+        },
+        {
+          "path": "node_modules/winston/lib/winston/logger.js",
+          "kind": "require-call",
+          "original": "./logger"
+        },
+        {
+          "path": "node_modules/@dabh/diagnostics/node/index.js",
+          "kind": "require-call",
+          "original": "@dabh/diagnostics"
+        },
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/winston/lib/winston/container.js": {
+      "bytes": 3361,
+      "imports": [
+        {
+          "path": "node_modules/winston/lib/winston/create-logger.js",
+          "kind": "require-call",
+          "original": "./create-logger"
+        },
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "cjs"
+    },
+    "node_modules/winston/lib/winston.js": {
+      "bytes": 4595,
+      "imports": [
+        {
+          "path": "node_modules/logform/index.js",
+          "kind": "require-call",
+          "original": "logform"
+        },
+        {
+          "path": "node_modules/winston/lib/winston/common.js",
+          "kind": "require-call",
+          "original": "./winston/common"
+        },
+        {
+          "path": "node_modules/winston/package.json",
+          "kind": "require-call",
+          "original": "../package.json"
+        },
+        {
+          "path": "node_modules/winston/lib/winston/transports/index.js",
+          "kind": "require-call",
+          "original": "./winston/transports"
+        },
+        {
+          "path": "node_modules/winston/lib/winston/config/index.js",
+          "kind": "require-call",
+          "original": "./winston/config"
+        },
+        {
+          "path": "node_modules/winston/lib/winston/create-logger.js",
+          "kind": "require-call",
+          "original": "./winston/create-logger"
+        },
+        {
+          "path": "node_modules/winston/lib/winston/logger.js",
+          "kind": "require-call",
+          "original": "./winston/logger"
+        },
+        {
+          "path": "node_modules/winston/lib/winston/exception-handler.js",
+          "kind": "require-call",
+          "original": "./winston/exception-handler"
+        },
+        {
+          "path": "node_modules/winston/lib/winston/rejection-handler.js",
+          "kind": "require-call",
+          "original": "./winston/rejection-handler"
+        },
+        {
+          "path": "node_modules/winston/lib/winston/container.js",
+          "kind": "require-call",
+          "original": "./winston/container"
+        },
+        {
+          "path": "node_modules/winston-transport/index.js",
+          "kind": "require-call",
+          "original": "winston-transport"
+        }
+      ],
+      "format": "cjs"
+    },
+    "src/shared/logger.ts": {
+      "bytes": 4813,
+      "imports": [
+        {
+          "path": "node_modules/winston/lib/winston.js",
+          "kind": "import-statement",
+          "original": "winston"
+        },
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    },
+    "src/functions/metadata-processor/index.ts": {
+      "bytes": 639,
+      "imports": [
+        {
+          "path": "aws-lambda",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "src/shared/logger.ts",
+          "kind": "import-statement",
+          "original": "@shared/logger"
+        },
+        {
+          "path": "@shared/utils",
+          "kind": "import-statement",
+          "external": true
+        },
+        {
+          "path": "<runtime>",
+          "kind": "import-statement",
+          "external": true
+        }
+      ],
+      "format": "esm"
+    }
+  },
+  "outputs": {
+    "dist/metadata-processor/index.js.map": {
+      "imports": [],
+      "exports": [],
+      "inputs": {},
+      "bytes": 559126
+    },
+    "dist/metadata-processor/index.js": {
+      "imports": [
+        {
+          "path": "os",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "util",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "util",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "util",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "util",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "util",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "stream",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "util",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "buffer",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "util",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "buffer",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "events",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "buffer",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "util",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "buffer",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "util",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "util",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "os",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "stream",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "fs",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "string_decoder",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "fs",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "path",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "zlib",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "os",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "http",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "https",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "os",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "os",
+          "kind": "require-call",
+          "external": true
+        },
+        {
+          "path": "os",
+          "kind": "require-call",
+          "external": true
+        }
+      ],
+      "exports": [],
+      "entryPoint": "src/functions/metadata-processor/index.ts",
+      "inputs": {
+        "node_modules/logform/format.js": {
+          "bytesInOutput": 458
+        },
+        "node_modules/@colors/colors/lib/styles.js": {
+          "bytesInOutput": 1002
+        },
+        "node_modules/@colors/colors/lib/system/has-flag.js": {
+          "bytesInOutput": 180
+        },
+        "node_modules/@colors/colors/lib/system/supports-colors.js": {
+          "bytesInOutput": 1468
+        },
+        "node_modules/@colors/colors/lib/custom/trap.js": {
+          "bytesInOutput": 1226
+        },
+        "node_modules/@colors/colors/lib/custom/zalgo.js": {
+          "bytesInOutput": 1859
+        },
+        "node_modules/@colors/colors/lib/maps/america.js": {
+          "bytesInOutput": 174
+        },
+        "node_modules/@colors/colors/lib/maps/zebra.js": {
+          "bytesInOutput": 99
+        },
+        "node_modules/@colors/colors/lib/maps/rainbow.js": {
+          "bytesInOutput": 156
+        },
+        "node_modules/@colors/colors/lib/maps/random.js": {
+          "bytesInOutput": 323
+        },
+        "node_modules/@colors/colors/lib/colors.js": {
+          "bytesInOutput": 2398
+        },
+        "node_modules/@colors/colors/safe.js": {
+          "bytesInOutput": 47
+        },
+        "node_modules/triple-beam/config/cli.js": {
+          "bytesInOutput": 266
+        },
+        "node_modules/triple-beam/config/npm.js": {
+          "bytesInOutput": 204
+        },
+        "node_modules/triple-beam/config/syslog.js": {
+          "bytesInOutput": 224
+        },
+        "node_modules/triple-beam/config/index.js": {
+          "bytesInOutput": 167
+        },
+        "node_modules/triple-beam/index.js": {
+          "bytesInOutput": 267
+        },
+        "node_modules/logform/colorize.js": {
+          "bytesInOutput": 894
+        },
+        "node_modules/logform/levels.js": {
+          "bytesInOutput": 101
+        },
+        "node_modules/logform/align.js": {
+          "bytesInOutput": 93
+        },
+        "node_modules/logform/errors.js": {
+          "bytesInOutput": 451
+        },
+        "node_modules/logform/pad-levels.js": {
+          "bytesInOutput": 732
+        },
+        "node_modules/logform/cli.js": {
+          "bytesInOutput": 411
+        },
+        "node_modules/logform/combine.js": {
+          "bytesInOutput": 539
+        },
+        "node_modules/safe-stable-stringify/index.js": {
+          "bytesInOutput": 8012
+        },
+        "node_modules/logform/json.js": {
+          "bytesInOutput": 234
+        },
+        "node_modules/logform/label.js": {
+          "bytesInOutput": 139
+        },
+        "node_modules/logform/logstash.js": {
+          "bytesInOutput": 251
+        },
+        "node_modules/logform/metadata.js": {
+          "bytesInOutput": 552
+        },
+        "node_modules/ms/index.js": {
+          "bytesInOutput": 1456
+        },
+        "node_modules/logform/ms.js": {
+          "bytesInOutput": 162
+        },
+        "node_modules/logform/pretty-print.js": {
+          "bytesInOutput": 248
+        },
+        "node_modules/logform/printf.js": {
+          "bytesInOutput": 228
+        },
+        "node_modules/logform/simple.js": {
+          "bytesInOutput": 296
+        },
+        "node_modules/logform/splat.js": {
+          "bytesInOutput": 664
+        },
+        "node_modules/fecha/lib/fecha.umd.js": {
+          "bytesInOutput": 6412
+        },
+        "node_modules/logform/timestamp.js": {
+          "bytesInOutput": 260
+        },
+        "node_modules/logform/uncolorize.js": {
+          "bytesInOutput": 245
+        },
+        "node_modules/logform/index.js": {
+          "bytesInOutput": 787
+        },
+        "node_modules/winston/lib/winston/common.js": {
+          "bytesInOutput": 480
+        },
+        "node_modules/winston/package.json": {
+          "bytesInOutput": 1566
+        },
+        "node_modules/util-deprecate/node.js": {
+          "bytesInOutput": 58
+        },
+        "node_modules/readable-stream/lib/internal/streams/stream.js": {
+          "bytesInOutput": 50
+        },
+        "node_modules/readable-stream/lib/internal/streams/destroy.js": {
+          "bytesInOutput": 1631
+        },
+        "node_modules/readable-stream/errors.js": {
+          "bytesInOutput": 1999
+        },
+        "node_modules/readable-stream/lib/internal/streams/state.js": {
+          "bytesInOutput": 422
+        },
+        "node_modules/inherits/inherits_browser.js": {
+          "bytesInOutput": 374
+        },
+        "node_modules/inherits/inherits.js": {
+          "bytesInOutput": 138
+        },
+        "node_modules/readable-stream/lib/internal/streams/buffer_list.js": {
+          "bytesInOutput": 3860
+        },
+        "node_modules/safe-buffer/index.js": {
+          "bytesInOutput": 854
+        },
+        "node_modules/string_decoder/lib/string_decoder.js": {
+          "bytesInOutput": 3959
+        },
+        "node_modules/readable-stream/lib/internal/streams/end-of-stream.js": {
+          "bytesInOutput": 1592
+        },
+        "node_modules/readable-stream/lib/internal/streams/async_iterator.js": {
+          "bytesInOutput": 2588
+        },
+        "node_modules/readable-stream/lib/internal/streams/from.js": {
+          "bytesInOutput": 2188
+        },
+        "node_modules/readable-stream/lib/_stream_readable.js": {
+          "bytesInOutput": 12937
+        },
+        "node_modules/readable-stream/lib/_stream_duplex.js": {
+          "bytesInOutput": 1464
+        },
+        "node_modules/readable-stream/lib/_stream_writable.js": {
+          "bytesInOutput": 8152
+        },
+        "node_modules/winston-transport/modern.js": {
+          "bytesInOutput": 1767
+        },
+        "node_modules/winston-transport/legacy.js": {
+          "bytesInOutput": 1570
+        },
+        "node_modules/winston-transport/index.js": {
+          "bytesInOutput": 88
+        },
+        "node_modules/winston/lib/winston/transports/console.js": {
+          "bytesInOutput": 1269
+        },
+        "node_modules/async/internal/isArrayLike.js": {
+          "bytesInOutput": 220
+        },
+        "node_modules/async/internal/initialParams.js": {
+          "bytesInOutput": 191
+        },
+        "node_modules/async/internal/setImmediate.js": {
+          "bytesInOutput": 532
+        },
+        "node_modules/async/asyncify.js": {
+          "bytesInOutput": 734
+        },
+        "node_modules/async/internal/wrapAsync.js": {
+          "bytesInOutput": 698
+        },
+        "node_modules/async/internal/awaitify.js": {
+          "bytesInOutput": 401
+        },
+        "node_modules/async/internal/parallel.js": {
+          "bytesInOutput": 406
+        },
+        "node_modules/async/internal/once.js": {
+          "bytesInOutput": 253
+        },
+        "node_modules/async/internal/getIterator.js": {
+          "bytesInOutput": 178
+        },
+        "node_modules/async/internal/iterator.js": {
+          "bytesInOutput": 817
+        },
+        "node_modules/async/internal/onlyOnce.js": {
+          "bytesInOutput": 266
+        },
+        "node_modules/async/internal/breakLoop.js": {
+          "bytesInOutput": 130
+        },
+        "node_modules/async/internal/asyncEachOfLimit.js": {
+          "bytesInOutput": 670
+        },
+        "node_modules/async/internal/eachOfLimit.js": {
+          "bytesInOutput": 913
+        },
+        "node_modules/async/eachOfLimit.js": {
+          "bytesInOutput": 367
+        },
+        "node_modules/async/eachOfSeries.js": {
+          "bytesInOutput": 331
+        },
+        "node_modules/async/series.js": {
+          "bytesInOutput": 312
+        },
+        "node_modules/readable-stream/lib/_stream_transform.js": {
+          "bytesInOutput": 2030
+        },
+        "node_modules/readable-stream/lib/_stream_passthrough.js": {
+          "bytesInOutput": 216
+        },
+        "node_modules/readable-stream/lib/internal/streams/pipeline.js": {
+          "bytesInOutput": 1173
+        },
+        "node_modules/readable-stream/readable.js": {
+          "bytesInOutput": 310
+        },
+        "node_modules/@dabh/diagnostics/diagnostics.js": {
+          "bytesInOutput": 1259
+        },
+        "node_modules/@dabh/diagnostics/node/production.js": {
+          "bytesInOutput": 165
+        },
+        "node_modules/@dabh/diagnostics/node/index.js": {
+          "bytesInOutput": 37
+        },
+        "node_modules/winston/lib/winston/tail-file.js": {
+          "bytesInOutput": 897
+        },
+        "node_modules/winston/lib/winston/transports/file.js": {
+          "bytesInOutput": 7462
+        },
+        "node_modules/winston/lib/winston/transports/http.js": {
+          "bytesInOutput": 2784
+        },
+        "node_modules/is-stream/index.js": {
+          "bytesInOutput": 437
+        },
+        "node_modules/winston/lib/winston/transports/stream.js": {
+          "bytesInOutput": 554
+        },
+        "node_modules/winston/lib/winston/transports/index.js": {
+          "bytesInOutput": 370
+        },
+        "node_modules/winston/lib/winston/config/index.js": {
+          "bytesInOutput": 162
+        },
+        "node_modules/async/eachOf.js": {
+          "bytesInOutput": 775
+        },
+        "node_modules/async/internal/withoutIndex.js": {
+          "bytesInOutput": 179
+        },
+        "node_modules/async/forEach.js": {
+          "bytesInOutput": 394
+        },
+        "node_modules/fn.name/index.js": {
+          "bytesInOutput": 457
+        },
+        "node_modules/one-time/index.js": {
+          "bytesInOutput": 197
+        },
+        "node_modules/stack-trace/lib/stack-trace.js": {
+          "bytesInOutput": 1652
+        },
+        "node_modules/winston/lib/winston/exception-stream.js": {
+          "bytesInOutput": 343
+        },
+        "node_modules/winston/lib/winston/exception-handler.js": {
+          "bytesInOutput": 2458
+        },
+        "node_modules/winston/lib/winston/rejection-stream.js": {
+          "bytesInOutput": 343
+        },
+        "node_modules/winston/lib/winston/rejection-handler.js": {
+          "bytesInOutput": 2463
+        },
+        "node_modules/winston/lib/winston/profiler.js": {
+          "bytesInOutput": 526
+        },
+        "node_modules/winston/lib/winston/logger.js": {
+          "bytesInOutput": 5824
+        },
+        "node_modules/winston/lib/winston/create-logger.js": {
+          "bytesInOutput": 856
+        },
+        "node_modules/winston/lib/winston/container.js": {
+          "bytesInOutput": 702
+        },
+        "node_modules/winston/lib/winston.js": {
+          "bytesInOutput": 1294
+        },
+        "src/functions/metadata-processor/index.ts": {
+          "bytesInOutput": 281
+        },
+        "src/shared/logger.ts": {
+          "bytesInOutput": 1768
+        }
+      },
+      "bytes": 129390
+    }
+  }
+}
