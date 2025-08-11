@@ -26,10 +26,7 @@
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-native": "0.79.5",
-    "react-native-fs": "^2.20.0",
-    "react-native-web": "^0.20.0",
-    "stream-browserify": "^3.0.0",
-    "util": "^0.12.5"
+    "react-native-web": "^0.20.0"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

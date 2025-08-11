@@ -4,35 +4,13 @@ import * as DocumentPicker from 'expo-document-picker';
 import * as ImagePicker from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
 import * as FileSystem from 'expo-file-system';
-// Native FS module and Node-style Buffer for RN
-let RNFS: any | null = null;
-let NodeID3: any | null = null;
-
-// Import react-native-fs
-try { 
-  RNFS = require('react-native-fs'); 
-} catch {}
-
-// Dynamically import node-id3 only at runtime, not during bundling
-const loadNodeID3 = async () => {
-  if (NodeID3 !== null) return NodeID3;
-  
-  try {
-    // Use dynamic import to avoid Metro bundling issues
-    NodeID3 = await import('node-id3').then(module => module.default || module);
-    return NodeID3;
-  } catch {
-    console.warn('node-id3 not available, ID3 tagging disabled');
-    return null;
-  }
-};
-// Web-only ID3 tagging (supports both default and CommonJS exports)
-let WebID3WriterCtor: any | null = null;
-if (typeof window !== 'undefined') {
-  try {
-    const mod = require('browser-id3-writer');
-    WebID3WriterCtor = (mod && (mod.default || mod.ID3Writer || mod.Writer)) || (typeof mod === 'function' ? mod : null);
-  } catch {}
+// Universal ID3 tagging using browser-id3-writer (works on all platforms)
+let ID3Writer: any | null = null;
+try {
+  const mod = require('browser-id3-writer');
+  ID3Writer = (mod && (mod.default || mod.ID3Writer || mod.Writer)) || (typeof mod === 'function' ? mod : null);
+} catch {
+  console.warn('browser-id3-writer not available, ID3 tagging disabled');
 }
 import { initiateUpload, MetadataPayload, getEc2Status, startEc2, stopEc2 } from '../lib/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -43,6 +21,98 @@ function formatBytes(bytes: number): string {
   if (bytes === 0) return '0 B';
   const i = Math.floor(Math.log(bytes) / Math.log(1024));
   return `${(bytes / Math.pow(1024, i)).toFixed(2)} ${sizes[i]}`;
+}
+
+// Universal ID3 tagging function that works on all platforms
+async function tagAudioFile(
+  fileUri: string, 
+  metadata: { title?: string; artist?: string; album?: string; year?: string; track?: string }, 
+  coverBase64?: string | null
+): Promise<{ uri: string; blob?: Blob }> {
+  if (!ID3Writer) {
+    console.warn('ID3Writer not available, returning original file');
+    if (Platform.OS === 'web') {
+      const blob = await fetch(fileUri).then(r => r.blob());
+      return { uri: fileUri, blob };
+    }
+    return { uri: fileUri };
+  }
+
+  try {
+    let arrayBuffer: ArrayBuffer;
+    
+    if (Platform.OS === 'web') {
+      // Web: fetch the file as ArrayBuffer
+      const response = await fetch(fileUri);
+      arrayBuffer = await response.arrayBuffer();
+    } else {
+      // Native: read file using Expo FileSystem
+      const base64String = await FileSystem.readAsStringAsync(fileUri, {
+        encoding: FileSystem.EncodingType.Base64,
+      });
+      const binaryString = atob(base64String);
+      const bytes = new Uint8Array(binaryString.length);
+      for (let i = 0; i < binaryString.length; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+      arrayBuffer = bytes.buffer;
+    }
+
+    // Create ID3 writer with the audio data
+    const writer = new ID3Writer(new Uint8Array(arrayBuffer));
+    
+    // Add metadata tags
+    if (metadata.title) writer.setFrame('TIT2', metadata.title);
+    if (metadata.artist) writer.setFrame('TPE1', [metadata.artist]);
+    if (metadata.album) writer.setFrame('TALB', metadata.album);
+    if (metadata.year) writer.setFrame('TYER', metadata.year);
+    if (metadata.track) writer.setFrame('TRCK', metadata.track);
+    
+    // Add cover art if provided
+    if (coverBase64) {
+      const binaryString = atob(coverBase64);
+      const coverBytes = new Uint8Array(binaryString.length);
+      for (let i = 0; i < binaryString.length; i++) {
+        coverBytes[i] = binaryString.charCodeAt(i);
+      }
+      writer.setFrame('APIC', {
+        type: 3, // Front cover
+        data: coverBytes,
+        description: 'Cover'
+      });
+    }
+    
+    // Write the tags
+    writer.addTag();
+    
+    if (Platform.OS === 'web') {
+      // Web: return as Blob
+      const taggedBlob = writer.getBlob ? writer.getBlob() : new Blob([writer.arrayBuffer], { type: 'audio/mpeg' });
+      return { uri: fileUri, blob: taggedBlob };
+    } else {
+      // Native: write to a new file
+      const taggedArray = new Uint8Array(writer.arrayBuffer);
+      let binaryString = '';
+      for (let i = 0; i < taggedArray.length; i++) {
+        binaryString += String.fromCharCode(taggedArray[i]);
+      }
+      const taggedBase64 = btoa(binaryString);
+      
+      const taggedPath = (FileSystem.documentDirectory || '') + 'tagged_audio.mp3';
+      await FileSystem.writeAsStringAsync(taggedPath, taggedBase64, {
+        encoding: FileSystem.EncodingType.Base64,
+      });
+      
+      return { uri: taggedPath };
+    }
+  } catch (error) {
+    console.warn('ID3 tagging failed, returning original file:', error);
+    if (Platform.OS === 'web') {
+      const blob = await fetch(fileUri).then(r => r.blob());
+      return { uri: fileUri, blob };
+    }
+    return { uri: fileUri };
+  }
 }
 
 export default function UploadScreen() {
@@ -229,67 +299,26 @@ export default function UploadScreen() {
         metadata,
       });
 
+      setMessage('Tagging file...');
+      
+      // Use unified tagging function for all platforms
+      const taggedFile = await tagAudioFile(
+        fileUri,
+        { title, artist, album, year, track },
+        coverJpegBase64
+      );
+
       setMessage('Uploading file...');
       const headers = { 'Content-Type': 'audio/mpeg', ...presign.requiredHeaders } as Record<string, string>;
+      
       if (Platform.OS === 'web') {
-        let blob = await fetch(fileUri).then(r => r.blob());
-        // Attempt to tag on web using browser-id3-writer if available
-        if (typeof WebID3WriterCtor === 'function') {
-          try {
-            const arrayBuffer = await blob.arrayBuffer();
-            const writer = new WebID3WriterCtor(new Uint8Array(arrayBuffer));
-            if (title) writer.setFrame('TIT2', title);
-            if (artist) writer.setFrame('TPE1', [artist]);
-            if (album) writer.setFrame('TALB', album);
-            if (year) writer.setFrame('TYER', String(year));
-            if (track) writer.setFrame('TRCK', String(track));
-            if (coverJpegBase64) {
-              const bin = atob(coverJpegBase64);
-              const bytes = new Uint8Array(bin.length);
-              for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
-              writer.setFrame('APIC', { type: 3, data: bytes, description: 'Cover' });
-            }
-            writer.addTag();
-            const taggedBlob = writer.getBlob ? writer.getBlob() : new Blob([writer.arrayBuffer], { type: 'audio/mpeg' });
-            if (taggedBlob) blob = taggedBlob;
-          } catch (e) {
-            console.warn('Web ID3 tagging failed, uploading original', e);
-          }
-        }
+        // Web: upload the tagged blob
+        const blob = taggedFile.blob || await fetch(taggedFile.uri).then(r => r.blob());
         const resp = await fetch(presign.presignedUrl, { method: 'PUT', headers, body: blob });
         if (!resp.ok) throw new Error(`PUT failed with status ${resp.status}`);
       } else {
-        // Native: tag file on-device if RNFS and node-id3 are available
-        let finalPath = fileUri;
-        try {
-          const nodeId3 = await loadNodeID3();
-          if (RNFS && nodeId3) {
-            // Read file bytes as base64
-            const base64 = await RNFS.readFile(fileUri.replace('file://',''), 'base64');
-            const buf = Buffer.from(base64, 'base64');
-            const frames: any = {};
-            if (title) frames.title = title;
-            if (artist) frames.artist = artist;
-            if (album) frames.album = album;
-            if (year) frames.year = String(year);
-            if (track) frames.trackNumber = String(track);
-            if (coverJpegBase64) {
-              frames.APIC = {
-                mime: 'image/jpeg',
-                type: { id: 3, name: 'front cover' },
-                description: 'Cover',
-                imageBuffer: Buffer.from(coverJpegBase64, 'base64'),
-              };
-            }
-            const tagged = nodeId3.update(frames, buf);
-            const outPath = (FileSystem.documentDirectory || '') + 'tagged.mp3';
-            await FileSystem.writeAsStringAsync(outPath, Buffer.from(tagged).toString('base64'), { encoding: FileSystem.EncodingType.Base64 });
-            finalPath = outPath;
-          }
-        } catch (e) {
-          console.warn('Native ID3 tagging failed; uploading original', e);
-        }
-        const putRes = await FileSystem.uploadAsync(presign.presignedUrl, finalPath, {
+        // Native: upload the tagged file
+        const putRes = await FileSystem.uploadAsync(presign.presignedUrl, taggedFile.uri, {
           httpMethod: 'PUT', headers, uploadType: FileSystem.FileSystemUploadType.BINARY_CONTENT,
         });
         if (putRes.status < 200 || putRes.status >= 300) throw new Error(`PUT failed with status ${putRes.status}`);
