@@ -7,17 +7,25 @@ import * as FileSystem from 'expo-file-system';
 // Native FS module and Node-style Buffer for RN
 let RNFS: any | null = null;
 let NodeID3: any | null = null;
-try { RNFS = require('react-native-fs'); } catch {}
-// Import node-id3 with proper fallback handling
+
+// Import react-native-fs
 try { 
-  NodeID3 = require('node-id3'); 
-  // Check if it's a real implementation (not our polyfill)
-  if (NodeID3 && typeof NodeID3.update !== 'function') {
-    NodeID3 = null;
+  RNFS = require('react-native-fs'); 
+} catch {}
+
+// Dynamically import node-id3 only at runtime, not during bundling
+const loadNodeID3 = async () => {
+  if (NodeID3 !== null) return NodeID3;
+  
+  try {
+    // Use dynamic import to avoid Metro bundling issues
+    NodeID3 = await import('node-id3').then(module => module.default || module);
+    return NodeID3;
+  } catch {
+    console.warn('node-id3 not available, ID3 tagging disabled');
+    return null;
   }
-} catch {
-  NodeID3 = null;
-}
+};
 // Web-only ID3 tagging (supports both default and CommonJS exports)
 let WebID3WriterCtor: any | null = null;
 if (typeof window !== 'undefined') {
@@ -254,7 +262,8 @@ export default function UploadScreen() {
         // Native: tag file on-device if RNFS and node-id3 are available
         let finalPath = fileUri;
         try {
-          if (RNFS && NodeID3) {
+          const nodeId3 = await loadNodeID3();
+          if (RNFS && nodeId3) {
             // Read file bytes as base64
             const base64 = await RNFS.readFile(fileUri.replace('file://',''), 'base64');
             const buf = Buffer.from(base64, 'base64');
@@ -272,7 +281,7 @@ export default function UploadScreen() {
                 imageBuffer: Buffer.from(coverJpegBase64, 'base64'),
               };
             }
-            const tagged = NodeID3.update(frames, buf);
+            const tagged = nodeId3.update(frames, buf);
             const outPath = (FileSystem.documentDirectory || '') + 'tagged.mp3';
             await FileSystem.writeAsStringAsync(outPath, Buffer.from(tagged).toString('base64'), { encoding: FileSystem.EncodingType.Base64 });
             finalPath = outPath;

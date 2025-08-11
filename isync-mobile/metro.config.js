@@ -3,9 +3,11 @@ const path = require('path');
 
 const config = getDefaultConfig(__dirname);
 
-// Configure resolver to handle node-id3's Node.js dependencies
+// Blacklist node-id3 module completely to prevent Metro from trying to bundle it
+config.resolver.blacklistRE = /node_modules\/node-id3\/.*/;
+
+// Configure resolver to handle Node.js dependencies with polyfills
 config.resolver.alias = {
-  'node-id3': path.resolve(__dirname, 'polyfills/node-id3.js'),
   'fs': path.resolve(__dirname, 'polyfills/fs.js'),
   'path': path.resolve(__dirname, 'polyfills/path.js'),
   'stream': 'stream-browserify',
@@ -18,7 +20,6 @@ config.resolver.resolverMainFields = ['react-native', 'browser', 'main'];
 
 // Configure resolver fallbacks for Node.js modules
 config.resolver.fallback = {
-  'node-id3': path.resolve(__dirname, 'polyfills/node-id3.js'),
   'fs': path.resolve(__dirname, 'polyfills/fs.js'),
   'path': path.resolve(__dirname, 'polyfills/path.js'),
   'stream': require.resolve('stream-browserify'),
