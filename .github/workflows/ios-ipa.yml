@@ -22,19 +22,33 @@ jobs:
         run: |
           pod install --repo-update
       - name: Build (unsigned)
-        working-directory: isync-mobile/ios
+        working-directory: isync-mobile
+        shell: bash
         run: |
-          set -e
-          SCHEME=$(xcodebuild -list -json | plutil -extract project.schemes json -o - - | jq -r '.[] | .[] | select(contains("Tests")|not) | select(contains("tvOS")|not) | select(contains("watchOS")|not)')
-          xcodebuild -scheme "$SCHEME" -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' CODE_SIGNING_ALLOWED=NO build | xcpretty
+          set -euo pipefail
+          SCHEME=$(node -e "const fs=require('fs');const c=JSON.parse(fs.readFileSync('app.json','utf8'));const n=(c.expo?.name||'App').replace(/[^A-Za-z0-9_]/g,'');process.stdout.write(n)")
+          echo "Using scheme: $SCHEME"
+          cd ios
+          if ls *.xcworkspace 1> /dev/null 2>&1; then
+            WS=$(ls *.xcworkspace | head -n1)
+            xcodebuild -workspace "$WS" -scheme "$SCHEME" -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' CODE_SIGNING_ALLOWED=NO build | xcpretty
+          else
+            PROJ=$(ls *.xcodeproj | head -n1)
+            xcodebuild -project "$PROJ" -scheme "$SCHEME" -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' CODE_SIGNING_ALLOWED=NO build | xcpretty
+          fi
       - name: Package IPA
         working-directory: isync-mobile
+        shell: bash
         run: |
-          set -e
-          APP_PATH=$(find ios/build -name "*.app" -type d | head -n 1)
-          mkdir -p Payload
+          set -euo pipefail
+          APP_PATH=$(find "$HOME/Library/Developer/Xcode/DerivedData" -path "*Build/Products/Release-iphoneos/*.app" -type d -maxdepth 6 2>/dev/null | head -n1)
+          if [ -z "$APP_PATH" ]; then
+            APP_PATH=$(find ios -path "*Build/Products/Release-iphoneos/*.app" -type d -maxdepth 8 2>/dev/null | head -n1)
+          fi
+          echo "App path: $APP_PATH"
+          rm -rf Payload; mkdir -p Payload
           cp -R "$APP_PATH" Payload/
-          zip -r isync-mobile-unsigned.ipa Payload
+          zip -qry isync-mobile-unsigned.ipa Payload
       - uses: actions/upload-artifact@v4
         with:
           name: isync-mobile-unsigned
