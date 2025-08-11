@@ -26,25 +26,26 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          SCHEME=$(node -e "const fs=require('fs');const c=JSON.parse(fs.readFileSync('app.json','utf8'));const n=(c.expo?.name||'App').replace(/[^A-Za-z0-9_]/g,'');process.stdout.write(n)")
-          echo "Using scheme: $SCHEME"
           cd ios
           if ls *.xcworkspace 1> /dev/null 2>&1; then
             WS=$(ls *.xcworkspace | head -n1)
-            xcodebuild -workspace "$WS" -scheme "$SCHEME" -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' CODE_SIGNING_ALLOWED=NO build | xcpretty
+            echo "Workspace: $WS"
+            SCHEME=$(xcodebuild -workspace "$WS" -list | awk '/Schemes:/{flag=1;next}/^$/{flag=0}flag' | head -n1 | xargs)
+            echo "Detected scheme: $SCHEME"
+            xcodebuild -workspace "$WS" -scheme "$SCHEME" -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' -derivedDataPath build CODE_SIGNING_ALLOWED=NO clean build | xcpretty
           else
             PROJ=$(ls *.xcodeproj | head -n1)
-            xcodebuild -project "$PROJ" -scheme "$SCHEME" -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' CODE_SIGNING_ALLOWED=NO build | xcpretty
+            echo "Project: $PROJ"
+            SCHEME=$(xcodebuild -project "$PROJ" -list | awk '/Schemes:/{flag=1;next}/^$/{flag=0}flag' | head -n1 | xargs)
+            echo "Detected scheme: $SCHEME"
+            xcodebuild -project "$PROJ" -scheme "$SCHEME" -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' -derivedDataPath build CODE_SIGNING_ALLOWED=NO clean build | xcpretty
           fi
       - name: Package IPA
         working-directory: isync-mobile
         shell: bash
         run: |
           set -euo pipefail
-          APP_PATH=$(find "$HOME/Library/Developer/Xcode/DerivedData" -path "*Build/Products/Release-iphoneos/*.app" -type d -maxdepth 6 2>/dev/null | head -n1)
-          if [ -z "$APP_PATH" ]; then
-            APP_PATH=$(find ios -path "*Build/Products/Release-iphoneos/*.app" -type d -maxdepth 8 2>/dev/null | head -n1)
-          fi
+          APP_PATH=$(find ios/build/Build/Products/Release-iphoneos -name "*.app" -type d | head -n1)
           echo "App path: $APP_PATH"
           rm -rf Payload; mkdir -p Payload
           cp -R "$APP_PATH" Payload/
