@@ -26,6 +26,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          APP_SCHEME=$(node -e "const fs=require('fs');const c=JSON.parse(fs.readFileSync('app.json','utf8'));const n=(c.expo?.name||'App').replace(/[^A-Za-z0-9_]/g,'');process.stdout.write(n)")
+          echo "Using app scheme: $APP_SCHEME"
           cd ios
           WS=$(find . -maxdepth 1 -type d -name "*.xcworkspace" -print -quit)
           echo "Workspace: $WS"
@@ -33,15 +35,20 @@ jobs:
             echo "No .xcworkspace found. Did prebuild/pods run?" >&2
             exit 1
           fi
-          SCHEME=$(xcodebuild -workspace "$WS" -list | awk '/Schemes:/{flag=1;next}/^$/{flag=0}flag' | head -n1 | xargs)
-          echo "Detected scheme: $SCHEME"
-          xcodebuild -workspace "$WS" -scheme "$SCHEME" -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' -derivedDataPath build CODE_SIGNING_ALLOWED=NO clean build | xcpretty
+          xcodebuild -workspace "$WS" -scheme "$APP_SCHEME" -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' -derivedDataPath build CODE_SIGNING_ALLOWED=NO clean build | xcpretty
       - name: Package IPA
         working-directory: isync-mobile
         shell: bash
         run: |
           set -euo pipefail
-          APP_PATH=$(find ios/build/Build/Products/Release-iphoneos -name "*.app" -type d | head -n1)
+          APP_DIR="ios/build/Build/Products/Release-iphoneos"
+          echo "Looking under: $APP_DIR"
+          APP_PATH=$(find "$APP_DIR" -maxdepth 2 -name "*.app" -type d | head -n1)
+          if [ -z "$APP_PATH" ]; then
+            echo "Did not find .app in $APP_DIR" >&2
+            ls -la "$APP_DIR" || true
+            exit 1
+          fi
           echo "App path: $APP_PATH"
           rm -rf Payload; mkdir -p Payload
           cp -R "$APP_PATH" Payload/
