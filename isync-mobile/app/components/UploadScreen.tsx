@@ -8,9 +8,15 @@ import * as FileSystem from 'expo-file-system';
 let RNFS: any | null = null;
 let NodeID3: any | null = null;
 try { RNFS = require('react-native-fs'); } catch {}
-// Only import node-id3 on native platforms, not during web builds
-if (Platform.OS !== 'web') {
-  try { NodeID3 = require('node-id3'); } catch {}
+// Import node-id3 with proper fallback handling
+try { 
+  NodeID3 = require('node-id3'); 
+  // Check if it's a real implementation (not our polyfill)
+  if (NodeID3 && typeof NodeID3.update !== 'function') {
+    NodeID3 = null;
+  }
+} catch {
+  NodeID3 = null;
 }
 // Web-only ID3 tagging (supports both default and CommonJS exports)
 let WebID3WriterCtor: any | null = null;
