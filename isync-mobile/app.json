@@ -14,7 +14,14 @@
     },
     "ios": {
       "bundleIdentifier": "com.quincy.isyncmobile",
-      "supportsTablet": true
+      "supportsTablet": true,
+      "plugins": [
+        ["expo-build-properties", {
+          "ios": {
+            "useFrameworks": "static"
+          }
+        }]
+      ]
     },
     "android": {
       "adaptiveIcon": {

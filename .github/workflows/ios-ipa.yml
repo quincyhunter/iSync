@@ -27,11 +27,15 @@ jobs:
         run: |
           set -euo pipefail
           cd ios
-          PROJ=$(ls -1d *.xcodeproj | head -n1)
-          echo "Project: $PROJ"
-          SCHEME=$(xcodebuild -project "$PROJ" -list | awk '/Schemes:/{flag=1;next}/^$/{flag=0}flag' | head -n1 | xargs)
+          WS=$(find . -maxdepth 1 -type d -name "*.xcworkspace" -print -quit)
+          echo "Workspace: $WS"
+          if [ -z "$WS" ]; then
+            echo "No .xcworkspace found. Did prebuild/pods run?" >&2
+            exit 1
+          fi
+          SCHEME=$(xcodebuild -workspace "$WS" -list | awk '/Schemes:/{flag=1;next}/^$/{flag=0}flag' | head -n1 | xargs)
           echo "Detected scheme: $SCHEME"
-          xcodebuild -project "$PROJ" -scheme "$SCHEME" -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' -derivedDataPath build CODE_SIGNING_ALLOWED=NO clean build | xcpretty
+          xcodebuild -workspace "$WS" -scheme "$SCHEME" -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' -derivedDataPath build CODE_SIGNING_ALLOWED=NO clean build | xcpretty
       - name: Package IPA
         working-directory: isync-mobile
         shell: bash
