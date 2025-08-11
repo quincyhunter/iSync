@@ -7,6 +7,13 @@ jobs:
     runs-on: macos-14
     steps:
       - uses: actions/checkout@v4
+      - name: Select Xcode 15.4 (Swift 5.x)
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '15.4'
+      - name: Show Xcode version
+        run: |
+          xcodebuild -version
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
