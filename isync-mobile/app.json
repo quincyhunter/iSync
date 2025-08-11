@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/isyncmobileicon.png",
-    "jsEngine": "jsc",
+    "jsEngine": "hermes",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
@@ -19,7 +19,8 @@
       "plugins": [
         ["expo-build-properties", {
           "ios": {
-            "useFrameworks": "static"
+            "useFrameworks": "dynamic",
+            "deploymentTarget": "16.0"
           }
         }]
       ]
