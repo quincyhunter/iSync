@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { View, Text, TouchableOpacity, TextInput, Alert, ActivityIndicator, ScrollView, Image, Modal, Platform } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, Alert, ActivityIndicator, ScrollView, Image, Modal, Platform, KeyboardAvoidingView } from 'react-native';
 import * as DocumentPicker from 'expo-document-picker';
 import * as ImagePicker from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
@@ -141,11 +141,17 @@ export default function UploadScreen() {
 
   const headerFileLabel = useMemo(() => {
     if (!selectedName) return 'Choose File';
-    const max = 10;
+    const max = 7;
     return selectedName.length > max ? `${selectedName.slice(0, max)}...` : selectedName;
   }, [selectedName]);
 
   const canUpload = useMemo(() => !!fileUri && !!fileName && !!fileSize, [fileUri, fileName, fileSize]);
+
+  // Refs for inputs to support focusing next
+  const artistRef = useRef<TextInput | null>(null);
+  const albumRef = useRef<TextInput | null>(null);
+  const yearRef = useRef<TextInput | null>(null);
+  const trackRef = useRef<TextInput | null>(null);
 
   // Load last used metadata on mount
   useEffect(() => {
@@ -338,118 +344,135 @@ export default function UploadScreen() {
   }, [canUpload, fileUri, fileName, fileSize, title, artist, album, year, track]);
 
   return (
-    <ScrollView contentContainerStyle={{ padding: 24 }} style={{ flex: 1, backgroundColor: '#111' }}>
-      <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 16, justifyContent: 'space-between' }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, flex: 1 }}>
-          <TouchableOpacity
-            onPress={async () => {
-              setShowInfo(true);
-              setStatusText('Toggling power...');
-              try {
-                const status = await getEc2Status();
-                if ((status.runningInstances ?? 0) > 0 || status.desiredCapacity === 1) {
-                  await stopEc2();
-                  setStatusText('Stop requested. VM will shut down shortly.');
-                  setVmRunning(false);
-                } else {
-                  await startEc2();
-                  setStatusText('Start requested. VM will launch shortly.');
-                  setVmRunning(true);
-                }
-              } catch (e: any) {
-                setStatusText(e?.message || 'Failed to toggle power');
-              }
-            }}
-            accessibilityLabel="Power"
-            style={{ width: 32, height: 32, borderRadius: 16, backgroundColor: '#222', alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: '#444' }}>
-            <Ionicons name="power" size={18} color={vmRunning ? '#34C759' : '#FA233B'} />
-          </TouchableOpacity>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={{ color: 'white', fontSize: 28, fontWeight: '700', fontFamily: Platform.OS === 'ios' ? 'System' : undefined }}>Upload File:</Text>
-            <TouchableOpacity onPress={pickFile} style={{ marginLeft: 8 }}>
-              <Text style={{ color: '#4ea3ff', fontSize: 18, fontFamily: Platform.OS === 'ios' ? 'System' : undefined }}>{headerFileLabel}</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-        <TouchableOpacity onPress={openStatus} accessibilityLabel="Info" style={{ width: 32, height: 32, borderRadius: 16, borderWidth: 1, borderColor: '#4ea3ff', alignItems: 'center', justifyContent: 'center' }}>
-          <Text style={{ color: '#4ea3ff', fontSize: 18, fontWeight: '700', fontFamily: Platform.OS === 'ios' ? 'System' : undefined }}>i</Text>
-        </TouchableOpacity>
-      </View>
-
-      <TouchableOpacity onPress={pickCover} activeOpacity={0.8} style={{
-        width: '100%',
-        aspectRatio: 1,
-        borderRadius: 16,
-        backgroundColor: '#3a3a3a',
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginBottom: 16,
-      }}>
-        {coverUri ? (
-          <Image source={{ uri: coverUri }} style={{ width: '100%', height: '100%', borderRadius: 16 }} resizeMode="cover" />
-        ) : (
-          <Text style={{ color: '#ddd', fontSize: 80, fontWeight: '300', fontFamily: Platform.OS === 'ios' ? 'System' : undefined }}>+</Text>
-        )}
-      </TouchableOpacity>
-
-      {selectedName && (
-        <Text style={{ color: '#bbb', marginBottom: 8, fontFamily: Platform.OS === 'ios' ? 'System' : undefined }}>
-          {fileSize ? `${formatBytes(fileSize)}` : ''}
-        </Text>
-      )}
-
-      {message && <Text style={{ color: '#8bd48b', marginBottom: 12, fontFamily: Platform.OS === 'ios' ? 'System' : undefined }}>{message}</Text>}
-
-      {[{ label: 'Title', value: title, setter: setTitle },
-        { label: 'Artist', value: artist, setter: setArtist },
-        { label: 'Album', value: album, setter: setAlbum },
-        { label: 'Year', value: year, setter: setYear },
-        { label: 'Track #', value: track, setter: setTrack },
-      ].map((row) => (
-        <View key={row.label} style={{ borderBottomWidth: 1, borderBottomColor: '#2a2a2a', marginBottom: 8 }}>
-          <Text style={{ color: '#bbb', marginBottom: 4, fontFamily: Platform.OS === 'ios' ? 'System' : undefined }}>{row.label}</Text>
-          <TextInput
-            value={row.value}
-            onChangeText={row.setter}
-            placeholder={row.label}
-            placeholderTextColor={'#666'}
-            keyboardType={row.label === 'Year' || row.label === 'Track #' ? 'number-pad' : 'default'}
-            style={{ color: 'white', paddingVertical: 8, fontFamily: Platform.OS === 'ios' ? 'System' : undefined }}
-          />
-        </View>
-      ))}
-
-      <TouchableOpacity
-        disabled={!canUpload || loading}
-        onPress={doUpload}
-        style={{
-          backgroundColor: canUpload ? '#FA233B' : '#5a2a2a',
-          borderRadius: 24,
-          paddingVertical: 16,
-          alignItems: 'center',
-          marginTop: 16,
-          marginBottom: 24,
-        }}
+    <KeyboardAvoidingView style={{ flex: 1, backgroundColor: '#111' }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+      <ScrollView
+        contentContainerStyle={{ padding: 24, paddingBottom: 40 }}
+        style={{ flex: 1 }}
+        keyboardShouldPersistTaps="handled"
+        automaticallyAdjustKeyboardInsets
       >
-        {loading ? (
-          <ActivityIndicator color={'white'} />
-        ) : (
-          <Text style={{ color: 'white', fontSize: 16, fontWeight: '600', fontFamily: Platform.OS === 'ios' ? 'System' : undefined }}>Upload to Library</Text>
-        )}
-      </TouchableOpacity>
-
-      <Modal visible={showInfo} transparent animationType="fade" onRequestClose={() => setShowInfo(false)}>
-        <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
-          <View style={{ backgroundColor: '#1a1a1a', borderRadius: 16, padding: 16, width: '100%' }}>
-            <Text style={{ color: 'white', fontSize: 18, marginBottom: 8, fontWeight: '700', fontFamily: Platform.OS === 'ios' ? 'System' : undefined }}>System Status</Text>
-            <Text style={{ color: '#ccc', marginBottom: 16, fontFamily: Platform.OS === 'ios' ? 'System' : undefined }}>{statusText}</Text>
-            <TouchableOpacity onPress={() => setShowInfo(false)} style={{ alignSelf: 'flex-end', paddingVertical: 10, paddingHorizontal: 16, backgroundColor: '#333', borderRadius: 12 }}>
-              <Text style={{ color: 'white', fontWeight: '600', fontFamily: Platform.OS === 'ios' ? 'System' : undefined }}>Close</Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 16, justifyContent: 'space-between' }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, flex: 1 }}>
+            <TouchableOpacity
+              onPress={async () => {
+                setShowInfo(true);
+                setStatusText('Toggling power...');
+                try {
+                  const status = await getEc2Status();
+                  if ((status.runningInstances ?? 0) > 0 || status.desiredCapacity === 1) {
+                    await stopEc2();
+                    setStatusText('Stop requested. VM will shut down shortly.');
+                    setVmRunning(false);
+                  } else {
+                    await startEc2();
+                    setStatusText('Start requested. VM will launch shortly.');
+                    setVmRunning(true);
+                  }
+                } catch (e: any) {
+                  setStatusText(e?.message || 'Failed to toggle power');
+                }
+              }}
+              accessibilityLabel="Power"
+              style={{ width: 32, height: 32, borderRadius: 16, backgroundColor: '#222', alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: '#444' }}>
+              <Ionicons name="power" size={18} color={vmRunning ? '#34C759' : '#FA233B'} />
             </TouchableOpacity>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Text style={{ color: 'white', fontSize: 28, fontWeight: '700', fontFamily: Platform.OS === 'ios' ? 'System' : undefined }}>Upload File:</Text>
+              <TouchableOpacity onPress={pickFile} style={{ marginLeft: 8 }}>
+                <Text style={{ color: '#4ea3ff', fontSize: 18, fontFamily: Platform.OS === 'ios' ? 'System' : undefined }}>{headerFileLabel}</Text>
+              </TouchableOpacity>
+            </View>
           </View>
+          <TouchableOpacity onPress={openStatus} accessibilityLabel="Info" style={{ width: 32, height: 32, borderRadius: 16, borderWidth: 1, borderColor: '#4ea3ff', alignItems: 'center', justifyContent: 'center' }}>
+            <Text style={{ color: '#4ea3ff', fontSize: 18, fontWeight: '700', fontFamily: Platform.OS === 'ios' ? 'System' : undefined }}>i</Text>
+          </TouchableOpacity>
         </View>
-      </Modal>
-    </ScrollView>
+
+        <TouchableOpacity onPress={pickCover} activeOpacity={0.8} style={{
+          width: '100%',
+          aspectRatio: 1,
+          borderRadius: 16,
+          backgroundColor: '#3a3a3a',
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginBottom: 16,
+        }}>
+          {coverUri ? (
+            <Image source={{ uri: coverUri }} style={{ width: '100%', height: '100%', borderRadius: 16 }} resizeMode="cover" />
+          ) : (
+            <Text style={{ color: '#ddd', fontSize: 80, fontWeight: '300', fontFamily: Platform.OS === 'ios' ? 'System' : undefined }}>+</Text>
+          )}
+        </TouchableOpacity>
+
+        {selectedName && (
+          <Text style={{ color: '#bbb', marginBottom: 8, fontFamily: Platform.OS === 'ios' ? 'System' : undefined }}>
+            {fileSize ? `${formatBytes(fileSize)}` : ''}
+          </Text>
+        )}
+
+        {message && <Text style={{ color: '#8bd48b', marginBottom: 12, fontFamily: Platform.OS === 'ios' ? 'System' : undefined }}>{message}</Text>}
+
+        {[{ label: 'Title', value: title, setter: setTitle, ref: undefined },
+          { label: 'Artist', value: artist, setter: setArtist, ref: artistRef },
+          { label: 'Album', value: album, setter: setAlbum, ref: albumRef },
+          { label: 'Year', value: year, setter: setYear, ref: yearRef },
+          { label: 'Track #', value: track, setter: setTrack, ref: trackRef },
+        ].map((row, index, arr) => (
+          <View key={row.label} style={{ borderBottomWidth: 1, borderBottomColor: '#2a2a2a', marginBottom: 8 }}>
+            <Text style={{ color: '#bbb', marginBottom: 4, fontFamily: Platform.OS === 'ios' ? 'System' : undefined }}>{row.label}</Text>
+            <TextInput
+              ref={row.ref as any}
+              value={row.value}
+              onChangeText={row.setter as any}
+              placeholder={row.label}
+              placeholderTextColor={'#666'}
+              keyboardType={row.label === 'Year' || row.label === 'Track #' ? 'number-pad' : 'default'}
+              returnKeyType={index < arr.length - 1 ? 'next' : 'done'}
+              blurOnSubmit={index === arr.length - 1}
+              onSubmitEditing={() => {
+                const next = arr[index + 1]?.ref?.current as TextInput | undefined;
+                if (next) next.focus();
+              }}
+              style={{ color: 'white', paddingVertical: 8, fontFamily: Platform.OS === 'ios' ? 'System' : undefined }}
+            />
+          </View>
+        ))}
+
+        <TouchableOpacity
+          disabled={!canUpload || loading}
+          onPress={doUpload}
+          style={{
+            backgroundColor: canUpload ? '#FA233B' : '#5a2a2a',
+            borderRadius: 24,
+            paddingVertical: 16,
+            alignItems: 'center',
+            marginTop: 16,
+            marginBottom: 24,
+          }}
+        >
+          {loading ? (
+            <ActivityIndicator color={'white'} />
+          ) : (
+            <Text style={{ color: 'white', fontSize: 16, fontWeight: '600', fontFamily: Platform.OS === 'ios' ? 'System' : undefined }}>Upload to Library</Text>
+          )}
+        </TouchableOpacity>
+
+        {/* Spacer to ensure last input is comfortably above keyboard */}
+        <View style={{ height: 20 }} />
+
+        <Modal visible={showInfo} transparent animationType="fade" onRequestClose={() => setShowInfo(false)}>
+          <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
+            <View style={{ backgroundColor: '#1a1a1a', borderRadius: 16, padding: 16, width: '100%' }}>
+              <Text style={{ color: 'white', fontSize: 18, marginBottom: 8, fontWeight: '700', fontFamily: Platform.OS === 'ios' ? 'System' : undefined }}>System Status</Text>
+              <Text style={{ color: '#ccc', marginBottom: 16, fontFamily: Platform.OS === 'ios' ? 'System' : undefined }}>{statusText}</Text>
+              <TouchableOpacity onPress={() => setShowInfo(false)} style={{ alignSelf: 'flex-end', paddingVertical: 10, paddingHorizontal: 16, backgroundColor: '#333', borderRadius: 12 }}>
+                <Text style={{ color: 'white', fontWeight: '600', fontFamily: Platform.OS === 'ios' ? 'System' : undefined }}>Close</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 

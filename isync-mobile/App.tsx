@@ -4,8 +4,8 @@ import UploadScreen from './app/components/UploadScreen';
 
 export default function App() {
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <StatusBar barStyle={Platform.OS === 'ios' ? 'dark-content' : 'light-content'} />
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#111' }}>
+      <StatusBar barStyle={'light-content'} />
       <UploadScreen />
     </SafeAreaView>
   );
