@@ -27,19 +27,11 @@ jobs:
         run: |
           set -euo pipefail
           cd ios
-          if ls *.xcworkspace 1> /dev/null 2>&1; then
-            WS=$(ls *.xcworkspace | head -n1)
-            echo "Workspace: $WS"
-            SCHEME=$(xcodebuild -workspace "$WS" -list | awk '/Schemes:/{flag=1;next}/^$/{flag=0}flag' | head -n1 | xargs)
-            echo "Detected scheme: $SCHEME"
-            xcodebuild -workspace "$WS" -scheme "$SCHEME" -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' -derivedDataPath build CODE_SIGNING_ALLOWED=NO clean build | xcpretty
-          else
-            PROJ=$(ls *.xcodeproj | head -n1)
-            echo "Project: $PROJ"
-            SCHEME=$(xcodebuild -project "$PROJ" -list | awk '/Schemes:/{flag=1;next}/^$/{flag=0}flag' | head -n1 | xargs)
-            echo "Detected scheme: $SCHEME"
-            xcodebuild -project "$PROJ" -scheme "$SCHEME" -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' -derivedDataPath build CODE_SIGNING_ALLOWED=NO clean build | xcpretty
-          fi
+          PROJ=$(ls -1d *.xcodeproj | head -n1)
+          echo "Project: $PROJ"
+          SCHEME=$(xcodebuild -project "$PROJ" -list | awk '/Schemes:/{flag=1;next}/^$/{flag=0}flag' | head -n1 | xargs)
+          echo "Detected scheme: $SCHEME"
+          xcodebuild -project "$PROJ" -scheme "$SCHEME" -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' -derivedDataPath build CODE_SIGNING_ALLOWED=NO clean build | xcpretty
       - name: Package IPA
         working-directory: isync-mobile
         shell: bash
