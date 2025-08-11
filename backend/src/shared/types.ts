@@ -19,8 +19,8 @@ export interface UploadRequest {
 }
 
 export interface MusicMetadata {
-  title: string;
-  artist: string;
+  title?: string;
+  artist?: string;
   album?: string;
   genre?: string;
   year?: number;

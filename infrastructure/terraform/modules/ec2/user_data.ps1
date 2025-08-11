@@ -59,7 +59,7 @@ Write-Log "Creating environment configuration..."
 $envContent = @"
 ENVIRONMENT=$environment
 AWS_DEFAULT_REGION=$awsRegion
-QUEUE_URL=$queueUrl
+SQS_QUEUE_URL=$queueUrl
 UPLOAD_BUCKET=$uploadBucket
 UPLOAD_TABLE=$uploadTable
 PYTHONPATH=C:\iSync
@@ -111,7 +111,7 @@ class WindowsMusicProcessor:
         self.sqs_client = boto3.client('sqs')
         self.dynamodb = boto3.resource('dynamodb')
         
-        self.queue_url = os.environ['QUEUE_URL']
+        self.queue_url = os.environ['SQS_QUEUE_URL']
         self.upload_bucket = os.environ['UPLOAD_BUCKET']
         self.upload_table = self.dynamodb.Table(os.environ['UPLOAD_TABLE'])
         
@@ -400,6 +400,28 @@ python processor.py
 '@
 
 Set-Content -Path "C:\iSync\run_processor.bat" -Value $startupScript
+
+# Start iTunes and ensure it's ready before running processor
+Write-Log "Starting iTunes and preparing for processor..."
+try {
+    # Start iTunes
+    $iTunesProcess = Start-Process "C:\Program Files\iTunes\iTunes.exe" -PassThru
+    Write-Log "iTunes started (PID: $($iTunesProcess.Id))"
+    
+    # Wait for iTunes to fully initialize (COM interface ready)
+    Start-Sleep 45
+    Write-Log "iTunes initialization wait complete"
+    
+    # Set iTunes to not show setup dialogs
+    New-ItemProperty -Path "HKCU:\SOFTWARE\Apple Computer, Inc.\iTunes" -Name "SetupVersion" -Value "12.12.9.1" -PropertyType String -Force -ErrorAction SilentlyContinue
+    
+    # Disable shutdown event tracker for cleaner auto-shutdown
+    Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Reliability" -Name "ShutdownReasonUI" -Value 0 -Type DWord -Force
+    Write-Log "System configuration updated"
+    
+} catch {
+    Write-Log "iTunes startup preparation failed: $($_.Exception.Message)"
+}
 
 # Run the processor immediately on startup
 Write-Log "Starting initial processing..."

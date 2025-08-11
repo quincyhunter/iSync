@@ -91,11 +91,6 @@ resource "aws_cloudwatch_dashboard" "isync_dashboard" {
       }
     ]
   })
-
-  tags = {
-    Name        = "iSync Dashboard"
-    Environment = var.environment
-  }
 }
 
 # CloudWatch Alarms

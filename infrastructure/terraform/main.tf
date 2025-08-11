@@ -87,6 +87,7 @@ module "api" {
   lambda_invoke_arn     = module.compute.lambda_invoke_arn
   upload_handler_name   = module.compute.upload_handler_name
   queue_manager_name    = module.compute.queue_manager_name
+  ec2_controller_name   = module.compute.ec2_controller_name
 }
 
 module "ec2" {
@@ -102,6 +103,7 @@ module "ec2" {
   upload_table            = module.storage.upload_table_name
   processing_schedule_arn = module.messaging.processing_schedule_arn
   aws_region              = var.aws_region
+  ami_id                  = var.ec2_ami_id
 }
 
 module "monitoring" {

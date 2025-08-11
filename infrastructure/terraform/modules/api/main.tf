@@ -19,10 +19,13 @@ resource "aws_api_gateway_deployment" "isync_api" {
     aws_api_gateway_method.library_get,
     aws_api_gateway_method.auth_post,
     aws_api_gateway_method.upload_delete,
+    aws_api_gateway_method.ec2_status_get,
+    aws_api_gateway_method.ec2_start_post,
+    aws_api_gateway_method.ec2_stop_post,
   ]
 
   rest_api_id = aws_api_gateway_rest_api.isync_api.id
-  stage_name  = var.environment
+  # stage_name removed; stage managed by aws_api_gateway_stage resource below
 
   lifecycle {
     create_before_destroy = true
@@ -33,16 +36,26 @@ resource "aws_api_gateway_deployment" "isync_api" {
       aws_api_gateway_resource.upload.id,
       aws_api_gateway_resource.library.id,
       aws_api_gateway_resource.auth.id,
+      aws_api_gateway_resource.ec2.id,
+      aws_api_gateway_resource.ec2_status.id,
+      aws_api_gateway_resource.ec2_start.id,
+      aws_api_gateway_resource.ec2_stop.id,
       aws_api_gateway_method.upload_post.id,
       aws_api_gateway_method.upload_get.id,
       aws_api_gateway_method.library_get.id,
       aws_api_gateway_method.auth_post.id,
       aws_api_gateway_method.upload_delete.id,
+      aws_api_gateway_method.ec2_status_get.id,
+      aws_api_gateway_method.ec2_start_post.id,
+      aws_api_gateway_method.ec2_stop_post.id,
       aws_api_gateway_integration.upload_post.id,
       aws_api_gateway_integration.upload_get.id,
       aws_api_gateway_integration.library_get.id,
       aws_api_gateway_integration.auth_post.id,
       aws_api_gateway_integration.upload_delete.id,
+      aws_api_gateway_integration.ec2_status_get.id,
+      aws_api_gateway_integration.ec2_start_post.id,
+      aws_api_gateway_integration.ec2_stop_post.id,
     ]))
   }
 }
@@ -92,6 +105,10 @@ resource "aws_api_gateway_method" "options" {
     upload  = aws_api_gateway_resource.upload.id
     library = aws_api_gateway_resource.library.id
     auth    = aws_api_gateway_resource.auth.id
+    ec2     = aws_api_gateway_resource.ec2.id
+    ec2_status = aws_api_gateway_resource.ec2_status.id
+    ec2_start = aws_api_gateway_resource.ec2_start.id
+    ec2_stop  = aws_api_gateway_resource.ec2_stop.id
   }
 
   rest_api_id   = aws_api_gateway_rest_api.isync_api.id
@@ -147,6 +164,29 @@ resource "aws_api_gateway_integration_response" "options" {
 }
 
 # API Resources
+resource "aws_api_gateway_resource" "ec2" {
+  rest_api_id = aws_api_gateway_rest_api.isync_api.id
+  parent_id   = aws_api_gateway_rest_api.isync_api.root_resource_id
+  path_part   = "ec2"
+}
+
+resource "aws_api_gateway_resource" "ec2_status" {
+  rest_api_id = aws_api_gateway_rest_api.isync_api.id
+  parent_id   = aws_api_gateway_resource.ec2.id
+  path_part   = "status"
+}
+
+resource "aws_api_gateway_resource" "ec2_start" {
+  rest_api_id = aws_api_gateway_rest_api.isync_api.id
+  parent_id   = aws_api_gateway_resource.ec2.id
+  path_part   = "start"
+}
+
+resource "aws_api_gateway_resource" "ec2_stop" {
+  rest_api_id = aws_api_gateway_rest_api.isync_api.id
+  parent_id   = aws_api_gateway_resource.ec2.id
+  path_part   = "stop"
+}
 resource "aws_api_gateway_resource" "upload" {
   rest_api_id = aws_api_gateway_rest_api.isync_api.id
   parent_id   = aws_api_gateway_rest_api.isync_api.root_resource_id
@@ -172,6 +212,163 @@ resource "aws_api_gateway_resource" "auth" {
 }
 
 # Methods and Integrations
+# GET /ec2/status -> Lambda (ec2_controller) with fixed payload { action: "STATUS", source: "api" }
+resource "aws_api_gateway_method" "ec2_status_get" {
+  rest_api_id   = aws_api_gateway_rest_api.isync_api.id
+  resource_id   = aws_api_gateway_resource.ec2_status.id
+  http_method   = "GET"
+  authorization = "NONE"
+}
+
+resource "aws_api_gateway_integration" "ec2_status_get" {
+  rest_api_id = aws_api_gateway_rest_api.isync_api.id
+  resource_id = aws_api_gateway_resource.ec2_status.id
+  http_method = aws_api_gateway_method.ec2_status_get.http_method
+
+  type                    = "AWS"
+  integration_http_method = "POST"
+  uri                     = var.lambda_invoke_arn.ec2_controller
+
+  request_templates = {
+    "application/json" = jsonencode({
+      action = "STATUS",
+      source = "api"
+    })
+  }
+}
+
+resource "aws_api_gateway_method_response" "ec2_status_get" {
+  rest_api_id = aws_api_gateway_rest_api.isync_api.id
+  resource_id = aws_api_gateway_resource.ec2_status.id
+  http_method = aws_api_gateway_method.ec2_status_get.http_method
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Origin"  = true
+    "method.response.header.Access-Control-Allow-Headers" = true
+    "method.response.header.Access-Control-Allow-Methods" = true
+  }
+}
+
+resource "aws_api_gateway_integration_response" "ec2_status_get" {
+  rest_api_id = aws_api_gateway_rest_api.isync_api.id
+  resource_id = aws_api_gateway_resource.ec2_status.id
+  http_method = aws_api_gateway_method.ec2_status_get.http_method
+  status_code = aws_api_gateway_method_response.ec2_status_get.status_code
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Origin"  = "'*'",
+    "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,Authorization'",
+    "method.response.header.Access-Control-Allow-Methods" = "'GET,OPTIONS'",
+  }
+
+  depends_on = [aws_api_gateway_method_response.ec2_status_get]
+}
+
+# POST /ec2/stop -> Lambda (ec2_controller) with fixed payload { action: "STOP", source: "mobile" }
+resource "aws_api_gateway_method" "ec2_stop_post" {
+  rest_api_id   = aws_api_gateway_rest_api.isync_api.id
+  resource_id   = aws_api_gateway_resource.ec2_stop.id
+  http_method   = "POST"
+  authorization = "NONE"
+}
+
+resource "aws_api_gateway_integration" "ec2_stop_post" {
+  rest_api_id = aws_api_gateway_rest_api.isync_api.id
+  resource_id = aws_api_gateway_resource.ec2_stop.id
+  http_method = aws_api_gateway_method.ec2_stop_post.http_method
+
+  type                    = "AWS"
+  integration_http_method = "POST"
+  uri                     = var.lambda_invoke_arn.ec2_controller
+
+  request_templates = {
+    "application/json" = jsonencode({
+      action = "STOP",
+      source = "mobile"
+    })
+  }
+}
+
+resource "aws_api_gateway_method_response" "ec2_stop_post" {
+  rest_api_id = aws_api_gateway_rest_api.isync_api.id
+  resource_id = aws_api_gateway_resource.ec2_stop.id
+  http_method = aws_api_gateway_method.ec2_stop_post.http_method
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Origin"  = true
+    "method.response.header.Access-Control-Allow-Headers" = true
+    "method.response.header.Access-Control-Allow-Methods" = true
+  }
+}
+
+resource "aws_api_gateway_integration_response" "ec2_stop_post" {
+  rest_api_id = aws_api_gateway_rest_api.isync_api.id
+  resource_id = aws_api_gateway_resource.ec2_stop.id
+  http_method = aws_api_gateway_method.ec2_stop_post.http_method
+  status_code = aws_api_gateway_method_response.ec2_stop_post.status_code
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Origin"  = "'*'",
+    "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,Authorization'",
+    "method.response.header.Access-Control-Allow-Methods" = "'GET,POST,OPTIONS'",
+  }
+
+  depends_on = [aws_api_gateway_method_response.ec2_stop_post]
+}
+# POST /ec2/start -> Lambda (ec2_controller) with fixed payload { action: "START", source: "mobile" }
+resource "aws_api_gateway_method" "ec2_start_post" {
+  rest_api_id   = aws_api_gateway_rest_api.isync_api.id
+  resource_id   = aws_api_gateway_resource.ec2_start.id
+  http_method   = "POST"
+  authorization = "NONE"
+}
+
+resource "aws_api_gateway_integration" "ec2_start_post" {
+  rest_api_id = aws_api_gateway_rest_api.isync_api.id
+  resource_id = aws_api_gateway_resource.ec2_start.id
+  http_method = aws_api_gateway_method.ec2_start_post.http_method
+
+  type                    = "AWS"
+  integration_http_method = "POST"
+  uri                     = var.lambda_invoke_arn.ec2_controller
+
+  request_templates = {
+    "application/json" = jsonencode({
+      action = "START",
+      source = "upload"
+    })
+  }
+}
+
+resource "aws_api_gateway_method_response" "ec2_start_post" {
+  rest_api_id = aws_api_gateway_rest_api.isync_api.id
+  resource_id = aws_api_gateway_resource.ec2_start.id
+  http_method = aws_api_gateway_method.ec2_start_post.http_method
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Origin"  = true
+    "method.response.header.Access-Control-Allow-Headers" = true
+    "method.response.header.Access-Control-Allow-Methods" = true
+  }
+}
+
+resource "aws_api_gateway_integration_response" "ec2_start_post" {
+  rest_api_id = aws_api_gateway_rest_api.isync_api.id
+  resource_id = aws_api_gateway_resource.ec2_start.id
+  http_method = aws_api_gateway_method.ec2_start_post.http_method
+  status_code = aws_api_gateway_method_response.ec2_start_post.status_code
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Origin"  = "'*'",
+    "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,Authorization'",
+    "method.response.header.Access-Control-Allow-Methods" = "'GET,POST,OPTIONS'",
+  }
+
+  depends_on = [aws_api_gateway_method_response.ec2_start_post]
+}
 # POST /upload
 resource "aws_api_gateway_method" "upload_post" {
   rest_api_id   = aws_api_gateway_rest_api.isync_api.id
@@ -275,6 +472,14 @@ resource "aws_lambda_permission" "api_gateway_queue" {
   statement_id  = "AllowAPIGatewayInvoke"
   action        = "lambda:InvokeFunction"
   function_name = var.queue_manager_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_api_gateway_rest_api.isync_api.execution_arn}/*/*"
+}
+
+resource "aws_lambda_permission" "api_gateway_ec2_status" {
+  statement_id  = "AllowAPIGatewayInvokeEC2Status"
+  action        = "lambda:InvokeFunction"
+  function_name = var.ec2_controller_name
   principal     = "apigateway.amazonaws.com"
   source_arn    = "${aws_api_gateway_rest_api.isync_api.execution_arn}/*/*"
 }

@@ -10,6 +10,7 @@
 import { APIGatewayProxyHandler, APIGatewayProxyEvent, Context } from 'aws-lambda';
 import { PutCommand, GetCommand, UpdateCommand, QueryCommand } from '@shared/aws-clients';
 import { awsClients, document } from '@shared/aws-clients';
+import { LambdaClient, InvokeCommand } from '@aws-sdk/client-lambda';
 import logger from '@shared/logger';
 import {
   generateUploadId,
@@ -48,6 +49,9 @@ import {
 
 // Lambda configuration
 const config = getLambdaConfig();
+
+// Lambda client for triggering EC2 controller
+const lambdaClient = new LambdaClient({ region: process.env.AWS_REGION });
 
 /**
  * Main Lambda handler
@@ -137,7 +141,8 @@ async function handleUploadInitiation(event: APIGatewayProxyEvent, requestId: st
       fileName: request.fileName,
       fileSize: request.fileSize,
       contentType: request.contentType,
-      metadata: request.metadata,
+      // Metadata is optional at initiation; embedded tags will be extracted later
+      metadata: request.metadata || {},
       status: UploadStatus.PENDING,
       createdAt: Date.now(),
       updatedAt: Date.now(),
@@ -156,6 +161,26 @@ async function handleUploadInitiation(event: APIGatewayProxyEvent, requestId: st
     );
 
     logger.info('Upload record created', { uploadId, s3Key });
+
+    // Trigger EC2 controller to start VM processing
+    try {
+      const invokeCommand = new InvokeCommand({
+        FunctionName: 'isync-ec2-controller-prod',
+        InvocationType: 'Event', // Async invocation
+        Payload: JSON.stringify({
+          action: 'START',
+          source: 'upload'
+        })
+      });
+
+      await lambdaClient.send(invokeCommand);
+      logger.info('Triggered VM start for processing');
+    } catch (error) {
+      // Don't fail the upload if VM trigger fails - log and continue
+      logger.warn('Failed to trigger VM start', { 
+        error: error instanceof Error ? error.message : String(error) 
+      });
+    }
 
     // Generate presigned URL
     const presignedUrl = await awsClients.generatePresignedUrl(

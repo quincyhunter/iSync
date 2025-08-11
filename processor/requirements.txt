@@ -1,0 +1,28 @@
+# Python Requirements for iSync Music Processor
+# Install with: pip install -r requirements.txt
+
+# AWS SDK for Python
+boto3>=1.26.0
+
+# Windows COM interface for iTunes
+pywin32>=306
+
+# Date/time utilities
+python-dateutil>=2.8.0
+
+# HTTP requests library
+requests>=2.28.0
+
+# JSON configuration (included in Python 3.11)
+# json (built-in)
+
+# Logging (built-in)
+# logging (built-in)
+
+# Type hints (built-in in Python 3.11)
+# typing (built-in)
+
+# Development/Testing Dependencies (optional)
+# pytest>=7.0.0
+# pytest-mock>=3.6.0
+# pytest-asyncio>=0.21.0

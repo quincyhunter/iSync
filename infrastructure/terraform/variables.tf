@@ -39,6 +39,11 @@ variable "ec2_instance_type" {
   default     = "t2.micro"
 }
 
+variable "ec2_ami_id" {
+  description = "AMI ID for the Windows iTunes/processor image used by the Auto Scaling launch template"
+  type        = string
+}
+
 variable "enable_detailed_monitoring" {
   description = "Enable detailed CloudWatch monitoring"
   type        = bool

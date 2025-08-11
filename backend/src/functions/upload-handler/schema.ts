@@ -9,10 +9,14 @@ import { UploadStatus } from '@shared/types';
 export const SUPPORTED_FILE_TYPES = {
   'audio/mpeg': { extension: 'mp3', maxSize: 100 * 1024 * 1024 }, // 100MB
   'audio/mp4': { extension: 'm4a', maxSize: 100 * 1024 * 1024 },
+  'audio/mp4a-latm': { extension: 'm4a', maxSize: 100 * 1024 * 1024 },
   'audio/m4a': { extension: 'm4a', maxSize: 100 * 1024 * 1024 },
+  'audio/x-m4a': { extension: 'm4a', maxSize: 100 * 1024 * 1024 },
+  'audio/aac': { extension: 'aac', maxSize: 100 * 1024 * 1024 },
   'audio/flac': { extension: 'flac', maxSize: 200 * 1024 * 1024 }, // 200MB for FLAC
   'audio/wav': { extension: 'wav', maxSize: 200 * 1024 * 1024 },
   'audio/wave': { extension: 'wav', maxSize: 200 * 1024 * 1024 },
+  'audio/x-wav': { extension: 'wav', maxSize: 200 * 1024 * 1024 },
 } as const;
 
 export const UPLOAD_CONSTRAINTS = {
@@ -29,13 +33,13 @@ export const UPLOAD_CONSTRAINTS = {
  */
 export const MusicMetadataSchema = z.object({
   title: z.string()
-    .min(1, 'Title is required')
     .max(200, 'Title must be less than 200 characters')
-    .trim(),
+    .trim()
+    .optional(),
   artist: z.string()
-    .min(1, 'Artist is required')
     .max(200, 'Artist must be less than 200 characters')
-    .trim(),
+    .trim()
+    .optional(),
   album: z.string()
     .max(200, 'Album must be less than 200 characters')
     .trim()
@@ -76,10 +80,10 @@ export const UploadRequestSchema = z.object({
     .refine(
       (name) => {
         const ext = name.toLowerCase().split('.').pop();
-        const validExtensions = ['mp3', 'm4a', 'flac', 'wav'];
+        const validExtensions = ['mp3', 'm4a', 'aac', 'flac', 'wav'];
         return validExtensions.includes(ext || '');
       },
-      'File must be a supported audio format (mp3, m4a, flac, wav)'
+      'File must be a supported audio format (mp3, m4a, aac, flac, wav)'
     ),
   fileSize: z.number()
     .int('File size must be an integer')
@@ -89,7 +93,8 @@ export const UploadRequestSchema = z.object({
     UPLOAD_CONSTRAINTS.SUPPORTED_CONTENT_TYPES as [string, ...string[]],
     { errorMap: () => ({ message: 'Unsupported file type' }) }
   ),
-  metadata: MusicMetadataSchema,
+  // Metadata is optional at upload time; embedded tags will be extracted later
+  metadata: MusicMetadataSchema.partial().optional(),
   userId: z.string()
     .min(1, 'User ID is required')
     .max(100, 'User ID too long')
@@ -133,6 +138,11 @@ export function validateFileTypeConsistency(fileName: string, contentType: strin
   
   if (!supportedType) {
     return false;
+  }
+  
+  // Handle special case where m4a files can be both audio/m4a and audio/aac
+  if (extension === 'm4a' && (contentType === 'audio/aac' || contentType === 'audio/x-m4a')) {
+    return true;
   }
   
   return extension === supportedType.extension;

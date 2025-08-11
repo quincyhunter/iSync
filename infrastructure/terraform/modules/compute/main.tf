@@ -114,6 +114,15 @@ data "aws_iam_policy_document" "lambda_permissions" {
     ]
     resources = ["*"]
   }
+
+  # Allow Lambda functions to publish custom metrics
+  statement {
+    effect = "Allow"
+    actions = [
+      "cloudwatch:PutMetricData"
+    ]
+    resources = ["*"]
+  }
 }
 
 resource "aws_iam_policy" "lambda_permissions" {
@@ -129,6 +138,27 @@ resource "aws_iam_role_policy_attachment" "lambda_permissions" {
 resource "aws_iam_role_policy_attachment" "lambda_basic_execution" {
   role       = aws_iam_role.lambda_execution_role.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+}
+
+# Allow S3 to invoke the metadata processor and wire bucket notifications
+resource "aws_lambda_permission" "s3_invoke_metadata" {
+  statement_id  = "AllowS3InvokeMetadata"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.metadata_processor.function_name
+  principal     = "s3.amazonaws.com"
+  source_arn    = var.upload_bucket_arn
+}
+
+resource "aws_s3_bucket_notification" "upload_events" {
+  bucket = var.upload_bucket
+
+  lambda_function {
+    lambda_function_arn = aws_lambda_function.metadata_processor.arn
+    events              = ["s3:ObjectCreated:*"]
+    filter_prefix       = "uploads/"
+  }
+
+  depends_on = [aws_lambda_permission.s3_invoke_metadata]
 }
 
 resource "aws_lambda_function" "upload_handler" {
@@ -180,6 +210,7 @@ resource "aws_lambda_function" "metadata_processor" {
       ENVIRONMENT        = var.environment
       UPLOAD_BUCKET     = var.upload_bucket
       UPLOAD_TABLE      = var.upload_table
+      QUEUE_URL         = var.queue_url
       NODE_OPTIONS      = "--enable-source-maps"
     }
   }

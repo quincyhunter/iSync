@@ -45,8 +45,9 @@ resource "aws_security_group" "processing_instance" {
 resource "aws_launch_template" "processing_instance" {
   name_prefix   = "isync-processing-${var.environment}-"
   description   = "Launch template for iSync music processing instances"
-  image_id      = data.aws_ami.windows.id
+  image_id      = var.ami_id
   instance_type = var.instance_type
+  key_name      = "isync-keypair"
 
   vpc_security_group_ids = [aws_security_group.processing_instance.id]
 
@@ -182,47 +183,4 @@ resource "aws_cloudwatch_metric_alarm" "queue_low" {
   }
 }
 
-# EventBridge target for scheduled processing
-resource "aws_cloudwatch_event_target" "scheduled_processing" {
-  rule      = "isync-processing-schedule-${var.environment}"
-  target_id = "isync-scheduled-processing-${var.environment}"
-  arn       = aws_autoscaling_policy.scale_up.arn
 
-  role_arn = aws_iam_role.eventbridge_asg_role.arn
-}
-
-# IAM role for EventBridge to trigger AutoScaling
-resource "aws_iam_role" "eventbridge_asg_role" {
-  name = "isync-eventbridge-asg-role-${var.environment}"
-
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = "sts:AssumeRole"
-        Effect = "Allow"
-        Principal = {
-          Service = "events.amazonaws.com"
-        }
-      }
-    ]
-  })
-}
-
-resource "aws_iam_role_policy" "eventbridge_asg_policy" {
-  name = "isync-eventbridge-asg-policy-${var.environment}"
-  role = aws_iam_role.eventbridge_asg_role.id
-
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect = "Allow"
-        Action = [
-          "autoscaling:ExecutePolicy"
-        ]
-        Resource = aws_autoscaling_policy.scale_up.arn
-      }
-    ]
-  })
-}

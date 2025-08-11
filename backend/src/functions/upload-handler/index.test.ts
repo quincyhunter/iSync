@@ -260,8 +260,9 @@ describe('Upload Handler Lambda', () => {
     });
 
     it('should return upload status successfully', async () => {
+      const testUploadId = '123e4567-e89b-12d3-a456-426614174000';
       const mockUpload = {
-        uploadId: 'test-upload-id',
+        uploadId: testUploadId,
         userId: 'user123',
         fileName: 'test-song.mp3',
         status: UploadStatus.COMPLETED,
@@ -271,13 +272,13 @@ describe('Upload Handler Lambda', () => {
 
       dynamoMock.on(GetCommand).resolves({ Item: mockUpload });
 
-      const event = createGetEvent('test-upload-id', 'user123');
+      const event = createGetEvent(testUploadId, 'user123');
       const result = await handler(event, mockContext) as any;
 
       expect(result.statusCode).toBe(200);
       
       const body = JSON.parse(result.body);
-      expect(body.uploadId).toBe('test-upload-id');
+      expect(body.uploadId).toBe(testUploadId);
       expect(body.status).toBe(UploadStatus.COMPLETED);
       expect(body.ttl).toBeUndefined(); // TTL should be filtered out
     });
@@ -285,7 +286,8 @@ describe('Upload Handler Lambda', () => {
     it('should return 404 for non-existent upload', async () => {
       dynamoMock.on(GetCommand).resolves({ Item: undefined });
 
-      const event = createGetEvent('non-existent-id', 'user123');
+      const testUploadId = '123e4567-e89b-12d3-a456-426614174001';
+      const event = createGetEvent(testUploadId, 'user123');
       const result = await handler(event, mockContext) as any;
 
       expect(result.statusCode).toBe(404);
@@ -353,14 +355,15 @@ describe('Upload Handler Lambda', () => {
     });
 
     it('should successfully cancel upload', async () => {
+      const testUploadId = '123e4567-e89b-12d3-a456-426614174002';
       dynamoMock.on(UpdateCommand).resolves({
         Attributes: {
-          uploadId: 'test-upload-id',
+          uploadId: testUploadId,
           status: UploadStatus.FAILED,
         },
       });
 
-      const event = createDeleteEvent('test-upload-id', {
+      const event = createDeleteEvent(testUploadId, {
         userId: 'user123',
         reason: 'User cancelled',
       });
@@ -375,12 +378,13 @@ describe('Upload Handler Lambda', () => {
     });
 
     it('should return 404 for non-cancellable upload', async () => {
+      const testUploadId = '123e4567-e89b-12d3-a456-426614174003';
       dynamoMock.on(UpdateCommand).rejects({
         name: 'ConditionalCheckFailedException',
         message: 'The conditional request failed',
       });
 
-      const event = createDeleteEvent('test-upload-id', {
+      const event = createDeleteEvent(testUploadId, {
         userId: 'user123',
         reason: 'User cancelled',
       });

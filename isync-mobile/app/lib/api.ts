@@ -1,6 +1,3 @@
-// Minimal API client for iSync mobile uploader
-// Aligns with backend POST /upload contract
-
 export type PresignedUrlResponse = {
   uploadId: string;
   presignedUrl: string;
@@ -9,8 +6,10 @@ export type PresignedUrlResponse = {
   requiredHeaders: Record<string, string>;
 };
 
-// Temporary configuration. Replace with env-driven config later.
-export const API_BASE = 'https://h750ty0lbj.execute-api.us-east-1.amazonaws.com/prod';
+// SET YOUR API BASE HERE
+export const API_BASE =
+  (typeof process !== 'undefined' && (process as any).env?.EXPO_PUBLIC_API_BASE) ||
+  'https://YOUR-API-ID.execute-api.us-east-1.amazonaws.com/prod';
 
 export type MetadataPayload = {
   title?: string;

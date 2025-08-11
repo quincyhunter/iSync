@@ -22,3 +22,8 @@ variable "queue_manager_name" {
   description = "Queue manager function name"
   type        = string
 }
+
+variable "ec2_controller_name" {
+  description = "EC2 controller function name"
+  type        = string
+}
