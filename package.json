@@ -1,7 +1,7 @@
 {
   "name": "isync",
   "version": "1.0.0",
-  "description": "A project to upload music files directly from your phone to your Apple Music library",
+  "description": "A project to upload music files directly from your phone to your Apple Music library through an AWS hosted cloud pipeline",
   "main": "index.js",
   "directories": {
     "doc": "docs",
