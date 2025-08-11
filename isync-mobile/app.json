@@ -6,16 +6,17 @@
     "orientation": "portrait",
     "icon": "./assets/isyncmobileicon.png",
     "jsEngine": "hermes",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "dark",
     "newArchEnabled": true,
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#111111"
     },
     "ios": {
       "bundleIdentifier": "com.quincy.isyncmobile",
       "supportsTablet": true,
+      "statusBarStyle": "light",
       "plugins": [
         ["expo-build-properties", {
           "ios": {
@@ -28,9 +29,10 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#111111"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "statusBarStyle": "light-content"
     },
     "web": {
       "favicon": "./assets/favicon.png"

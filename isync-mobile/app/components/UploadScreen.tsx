@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { View, Text, TouchableOpacity, TextInput, Alert, ActivityIndicator, ScrollView, Image, Modal, Platform, KeyboardAvoidingView } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, Alert, ActivityIndicator, ScrollView, Image, Modal, Platform, KeyboardAvoidingView, SafeAreaView, StatusBar } from 'react-native';
 import * as DocumentPicker from 'expo-document-picker';
 import * as ImagePicker from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
@@ -15,6 +15,7 @@ try {
 import { initiateUpload, MetadataPayload, getEc2Status, startEc2, stopEc2 } from '../lib/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
+import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
 
 function formatBytes(bytes: number): string {
   const sizes = ['B', 'KB', 'MB', 'GB'];
@@ -344,13 +345,20 @@ export default function UploadScreen() {
   }, [canUpload, fileUri, fileName, fileSize, title, artist, album, year, track]);
 
   return (
-    <KeyboardAvoidingView style={{ flex: 1, backgroundColor: '#111' }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-      <ScrollView
-        contentContainerStyle={{ padding: 24, paddingBottom: 40 }}
-        style={{ flex: 1 }}
-        keyboardShouldPersistTaps="handled"
-        automaticallyAdjustKeyboardInsets
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#111' }}>
+      <ExpoStatusBar style="light" backgroundColor="#111" />
+      <KeyboardAvoidingView 
+        style={{ flex: 1 }} 
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
       >
+        <ScrollView
+          contentContainerStyle={{ padding: 24, paddingBottom: 60 }}
+          style={{ flex: 1, backgroundColor: '#111' }}
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
+          contentInsetAdjustmentBehavior="automatic"
+        >
         <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 16, justifyContent: 'space-between' }}>
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, flex: 1 }}>
             <TouchableOpacity
@@ -458,7 +466,7 @@ export default function UploadScreen() {
         </TouchableOpacity>
 
         {/* Spacer to ensure last input is comfortably above keyboard */}
-        <View style={{ height: 20 }} />
+        <View style={{ height: Platform.OS === 'ios' ? 40 : 60 }} />
 
         <Modal visible={showInfo} transparent animationType="fade" onRequestClose={() => setShowInfo(false)}>
           <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
@@ -471,8 +479,9 @@ export default function UploadScreen() {
             </View>
           </View>
         </Modal>
-      </ScrollView>
-    </KeyboardAvoidingView>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }
 
