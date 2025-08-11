@@ -1,0 +1,42 @@
+name: iOS unsigned IPA
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install JS deps
+        working-directory: isync-mobile
+        run: npm ci
+      - name: Prebuild iOS (generate native project)
+        working-directory: isync-mobile
+        run: npx expo prebuild -p ios --non-interactive
+      - name: CocoaPods install
+        working-directory: isync-mobile/ios
+        run: |
+          pod install --repo-update
+      - name: Build (unsigned)
+        working-directory: isync-mobile/ios
+        run: |
+          set -e
+          SCHEME=$(xcodebuild -list -json | plutil -extract project.schemes json -o - - | jq -r '.[] | .[] | select(contains("Tests")|not) | select(contains("tvOS")|not) | select(contains("watchOS")|not)')
+          xcodebuild -scheme "$SCHEME" -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' CODE_SIGNING_ALLOWED=NO build | xcpretty
+      - name: Package IPA
+        working-directory: isync-mobile
+        run: |
+          set -e
+          APP_PATH=$(find ios/build -name "*.app" -type d | head -n 1)
+          mkdir -p Payload
+          cp -R "$APP_PATH" Payload/
+          zip -r isync-mobile-unsigned.ipa Payload
+      - uses: actions/upload-artifact@v4
+        with:
+          name: isync-mobile-unsigned
+          path: isync-mobile/isync-mobile-unsigned.ipa
+
