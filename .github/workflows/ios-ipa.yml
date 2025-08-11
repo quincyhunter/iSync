@@ -20,7 +20,9 @@ jobs:
           node-version: '20'
       - name: Install JS deps
         working-directory: isync-mobile
-        run: npm ci
+        run: |
+          npm ci
+          npx expo install --fix
       - name: Prebuild iOS (generate native project)
         working-directory: isync-mobile
         run: npx expo prebuild -p ios --non-interactive
